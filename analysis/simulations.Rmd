@@ -1,0 +1,162 @@
+---
+title: "Application of SNN to simulated Gaussian data with correlated factors"
+author: "Yusha Liu"
+date: "2021-10-08"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(flashier)
+library(magrittr)
+library(RColorBrewer)
+library(pheatmap)
+
+### load in the function to implement snn
+source("code/fit_snn.R")
+
+### set seed
+set.seed(1)
+
+### simulate loadings
+L <- matrix(0, nrow=400, ncol=5)
+L[,1] <- rnorm(400, 1, 0.3)
+L[1:100,2] <- rnorm(100, 1, 0.3)
+L[101:200, 3] <- rnorm(100, 1, 0.3)
+L[201:300, 4] <- rnorm(100, 1, 0.3)
+L[301:400, 5] <- rnorm(100, 1, 0.3)
+L[L!=0 & L < 0.2] <- 0.2
+
+### simulate factors
+F <- matrix(0, nrow=2000, ncol=5)
+F[,1] <- rnorm(2000, 10, 2)
+F[1:200, 2] <- rnorm(200, 0.5, 0.1)
+F[151:200, 3] <- F[151:200, 2]
+F[201:350, 3] <- rnorm(150, 0.5, 0.1)
+F[351:550, 4] <- rnorm(200, 0.5, 0.1)
+F[501:550, 5] <- F[501:550, 4]
+F[551:700, 5] <- rnorm(150, 0.5, 0.1)
+F[F!= 0 & F < 0.2] <- 0.2
+
+### plot the truth
+colnames(L) <- paste0("k", 1:ncol(L))
+colnames(F) <- paste0("k", 1:ncol(F))
+pheatmap(L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True L")
+pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True F")
+
+### simulate gaussian data with difference noise levels
+data1 <- L %*% t(F) + matrix(rnorm(400*2000, 0, 1), nrow=400, ncol=2000)
+data2 <- L %*% t(F) + matrix(rnorm(400*2000, 0, 0.7), nrow=400, ncol=2000)
+
+```
+
+
+### Scenario 1: sigma=1 (default initialization)
+```{r warning=F}
+### run snn on the simulated data
+fit1.snn <- fit.snn(data=data1, Kmax=10)
+
+### define the color map for Z scores
+cols <- colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100)
+cols <- c(cols[1:25], "lightgray", cols[76:100])
+brks <- c(seq(-6, -2, length=26), seq(2, 6, length=26))
+
+### plot the scaled loadings and factors
+fit1.L <- fit1.snn$loadings.pm[[1]]
+fit1.L <- t(t(fit1.L)/apply(fit1.L, 2, max))
+colnames(fit1.L) <- paste0("k", 1:ncol(fit1.L))
+fit1.Z <- fit1.snn$loadings.pm[[2]]/fit1.snn$loadings.psd[[2]]
+colnames(fit1.Z) <- paste0("k", 1:ncol(fit1.Z))
+pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L (sigma=1, default init)")
+pheatmap(fit1.Z[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, color = cols, breaks = brks, 
+         main="Estimated F (sigma=1, default init)")
+
+```
+
+
+### Scenario 1: sigma=1 (initialization using true values, but splitting overlapping factors into uncorrelated ones)
+```{r warning=F}
+### split true overlapping factors into uncorrelated ones
+F.init <- matrix(0, nrow=nrow(F), ncol=7)
+F.init[,1] <- F[,1]
+F.init[1:150,2] <- F[1:150,2]
+F.init[201:350,3] <- F[201:350,3]
+F.init[351:500,4] <- F[351:500,4]
+F.init[551:700,5] <- F[551:700,5]
+F.init[151:200,6] <- F[151:200,2]
+F.init[501:550,7] <- F[501:550,4]
+
+L.init <- matrix(0, nrow=nrow(L), ncol=2)
+L.init[1:100,1] <- L[1:100,2]
+L.init[101:200,1] <- L[101:200,3]
+L.init[201:300,2] <- L[201:300,4]
+L.init[301:400,2] <- L[301:400,5]
+L.init <- cbind(L, L.init)
+
+EF.init <- list(NULL)
+EF.init[[1]] <- L.init
+EF.init[[2]] <- F.init
+
+### run snn on the simulated data
+fit1.snn.v2 <- flash.init(data1, S = 1/sqrt(nrow(data1)), var.type = 2
+) %>% flash.init.factors(EF = EF.init, prior.family = c(prior.nonnegative(), prior.normal.scale.mix())) %>% flash.backfit(verbose.lvl = 0)
+
+### plot the scaled loadings and factors
+fit1.L <- fit1.snn.v2$loadings.pm[[1]]
+fit1.L <- t(t(fit1.L)/apply(fit1.L, 2, max))
+colnames(fit1.L) <- paste0("k", 1:ncol(fit1.L))
+fit1.Z <- fit1.snn.v2$loadings.pm[[2]]/fit1.snn.v2$loadings.psd[[2]]
+colnames(fit1.Z) <- paste0("k", 1:ncol(fit1.Z))
+pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L (sigma=1, oracle init)")
+pheatmap(fit1.Z[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, color = cols, breaks = brks, 
+         main="Estimated F (sigma=1, oracle init)")
+
+### compare the ELBO between two fits
+fit1.snn$elbo
+fit1.snn.v2$elbo
+
+```
+
+
+### Scenario 2: sigma=0.7 (default initialization)
+```{r warning=F}
+### run snn on the simulated data
+fit2.snn <- fit.snn(data=data2, Kmax=10)
+
+### plot the scaled loadings and factors
+fit2.L <- fit2.snn$loadings.pm[[1]]
+fit2.L <- t(t(fit2.L)/apply(fit2.L, 2, max))
+colnames(fit2.L) <- paste0("k", 1:ncol(fit2.L))
+fit2.Z <- fit2.snn$loadings.pm[[2]]/fit2.snn$loadings.psd[[2]]
+colnames(fit2.Z) <- paste0("k", 1:ncol(fit2.Z))
+pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L (sigma=0.7, default init)")
+pheatmap(fit2.Z[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, color = cols, breaks = brks, 
+         main="Estimated F (sigma=0.7, default init)")
+
+```
+
+
+### Scenario 2: sigma=0.7 (initialization using true values, but splitting overlapping factors into uncorrelated ones)
+```{r warning=F}
+### run snn on the simulated data
+fit2.snn.v2 <- flash.init(data2, S = 1/sqrt(nrow(data2)), var.type = 2
+) %>% flash.init.factors(EF = EF.init, prior.family = c(prior.nonnegative(), prior.normal.scale.mix())) %>% flash.backfit(verbose.lvl = 0)
+
+### plot the scaled loadings and factors
+fit2.L <- fit2.snn.v2$loadings.pm[[1]]
+fit2.L <- t(t(fit2.L)/apply(fit2.L, 2, max))
+colnames(fit2.L) <- paste0("k", 1:ncol(fit2.L))
+fit2.Z <- fit2.snn.v2$loadings.pm[[2]]/fit2.snn.v2$loadings.psd[[2]]
+colnames(fit2.Z) <- paste0("k", 1:ncol(fit2.Z))
+pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L (sigma=0.7, oracle init)")
+pheatmap(fit2.Z[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, color = cols, breaks = brks, 
+         main="Estimated F (sigma=0.7, oracle init)")
+
+### compare the ELBO between two fits
+fit2.snn$elbo
+fit2.snn.v2$elbo
+
+```
