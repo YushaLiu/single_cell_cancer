@@ -10,4 +10,4 @@ editor_options:
 
 Welcome to my research website.
 
-Click on this [link](simulations.html) to see my simulation results.
+Click on this [link](simulations2.html) to see my simulation results.
