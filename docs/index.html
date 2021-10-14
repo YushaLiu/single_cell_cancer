@@ -305,7 +305,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-13
+<strong>Last updated:</strong> 2021-10-14
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -336,16 +336,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertree8521977b6b6aac5b5071254ed5a09d5dc68d11fetargetblank8521977a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/8521977b6b6aac5b5071254ed5a09d5dc68d11fe" target="_blank">8521977</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertree0386e741a838e196410c82a9fb4477a869916ddatargetblank0386e74a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/0386e741a838e196410c82a9fb4477a869916dda" target="_blank">0386e74</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertree8521977b6b6aac5b5071254ed5a09d5dc68d11fetargetblank8521977a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertree0386e741a838e196410c82a9fb4477a869916ddatargetblank0386e74a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/8521977b6b6aac5b5071254ed5a09d5dc68d11fe" target="_blank">8521977</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/0386e741a838e196410c82a9fb4477a869916dda" target="_blank">0386e74</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -354,11 +354,10 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
-    Ignored:    analysis/figure/
 
 Untracked files:
-    Untracked:  code/fit_snn.R
-    Untracked:  data/model.rds
+    Untracked:  code/simulations.R
+    Untracked:  code/util.R
 
 </code></pre>
 <p>
@@ -397,6 +396,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/0386e741a838e196410c82a9fb4477a869916dda/analysis/index.Rmd" target="_blank">0386e74</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-14
+</td>
+<td>
+add more simulation results applied to covariance matrix
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/de9476edaa14cd1cf701310f95f059bb81c4287a/docs/index.html" target="_blank">de9476e</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-13
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -490,7 +523,7 @@ Start workflowr project.
 </div>
 </div>
 <p>Welcome to my research website.</p>
-<p>Click on this <a href="simulations2.html">link</a> to see my simulation results.</p>
+<p>Click on this <a href="simulations2.html">link</a> to see application of flash to simulated data with correlated factors. <br /> Click on this <a href="simulations3.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors.</p>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
