@@ -10,4 +10,5 @@ editor_options:
 
 Welcome to my research website.
 
-Click on this [link](simulations2.html) to see my simulation results.
+Click on this [link](simulations2.html) to see application of flash to simulated data with correlated factors.  <br /> 
+Click on this [link](simulations3.html) to see application of flash to covariance matrix of simulated data with correlated factors.
