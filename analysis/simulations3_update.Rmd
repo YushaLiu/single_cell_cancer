@@ -1,0 +1,175 @@
+---
+title: "Application of SNN to covariance matrix of simulated Gaussian data with correlated factors"
+author: "Yusha Liu"
+date: "2021-10-14"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(flashier)
+library(magrittr)
+library(RColorBrewer)
+library(pheatmap)
+
+### load in the function to implement snn
+source("code/util.R")
+
+### set seed
+set.seed(100)
+
+### load in simulated loadings and factors
+L <- readRDS("data/model.rds")$L
+F <- readRDS("data/model.rds")$F
+F[,1] <- F[,1] - 10
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True L")
+pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True F")
+
+```
+
+
+### Use true L for initialization (sigma2=1)
+```{r warning=F}
+### simulate data with i.i.d. gaussian errors
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
+
+### calculate the rescaled XX'
+XXt <- X %*% t(X)/ncol(X)
+
+### calculate rescaled initial values for L
+sf <- sqrt(nrow(F)/colSums(F^2))
+init.F <- t(t(F)*sf)
+init.L <- t(t(L)/sf)
+
+### fit flash with point exponential prior to XXt without considering the diagonal component for now
+fit1 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit1 <- fit.ebcovmf(dat=XXt, fl=fit1, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### look at the estimates of L
+fit1.L <- fit1$loadings.pm[[1]]
+fit1.L <- fit1.L[, fit1$pve > 0]
+fit1.L <- t(t(fit1.L)/apply(fit1.L, 2, max))
+colnames(fit1.L) <- paste0("k", 1:ncol(fit1.L))
+pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
+         main="Estimated L with point-exponential prior \n (oracle init, sigma2=1)")
+
+```
+
+
+### Add all factors greedily, then take nonnegative transform and backfit all factors (sigma2=1)
+```{r warning=F}
+### fit unconstrained flash with point Laplace prior to XXt without considering the diagonal component for now
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace(), verbose.lvl = 1
+) %>% flash.backfit(verbose.lvl = 1)
+
+### fit unconstrained flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2)$fl
+
+### initialize the nonnegative fit based on the unconstrained flash fit 
+snn.cov.init <- init.snn.cov(fit2)
+
+### fit flash with point exponential prior to XXt without considering the diagonal component for now
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### look at the estimates of L
+fit2.L <- fit2$loadings.pm[[1]]
+fit2.L <- fit2.L[, fit2$pve > 0]
+fit2.L <- t(t(fit2.L)/apply(fit2.L, 2, max))
+colnames(fit2.L) <- paste0("k", 1:ncol(fit2.L))
+pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L with point-exponential prior \n (greedy all + backfit all, sigma2=1")
+
+```
+
+
+### Compare the fits to the covariance matrix
+```{r warning=F}
+### number of factors
+fit1$n.factors
+fit2$n.factors
+
+### elbo
+fit1$elbo
+fit2$elbo
+
+```
+
+
+### Use true L for initialization (sigma2=0.5)
+```{r warning=F}
+### simulate data with i.i.d. gaussian errors
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 0.7), nrow=800, ncol=2000)
+
+### calculate the rescaled XX'
+XXt <- X %*% t(X)/ncol(X)
+
+### calculate rescaled initial values for L
+sf <- sqrt(nrow(F)/colSums(F^2))
+init.F <- t(t(F)*sf)
+init.L <- t(t(L)/sf)
+
+### fit flash with point exponential prior to XXt without considering the diagonal component for now
+fit1 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit1 <- fit.ebcovmf(dat=XXt, fl=fit1, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### look at the estimates of L
+fit1.L <- fit1$loadings.pm[[1]]
+fit1.L <- fit1.L[, fit1$pve > 0]
+fit1.L <- t(t(fit1.L)/apply(fit1.L, 2, max))
+colnames(fit1.L) <- paste0("k", 1:ncol(fit1.L))
+pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
+         main="Estimated L with point-exponential prior \n (oracle init, sigma2=0.5)")
+
+```
+
+
+### Add all factors greedily, then take nonnegative transform and backfit all factors (sigma2=0.5)
+```{r warning=F}
+### fit unconstrained flash with point Laplace prior to XXt without considering the diagonal component for now
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace(), verbose.lvl = 1
+) %>% flash.backfit(verbose.lvl = 1)
+
+### fit unconstrained flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2)$fl
+
+### initialize the nonnegative fit based on the unconstrained flash fit 
+snn.cov.init <- init.snn.cov(fit2)
+
+### fit flash with point exponential prior to XXt without considering the diagonal component for now
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### look at the estimates of L
+fit2.L <- fit2$loadings.pm[[1]]
+fit2.L <- fit2.L[, fit2$pve > 0]
+fit2.L <- t(t(fit2.L)/apply(fit2.L, 2, max))
+colnames(fit2.L) <- paste0("k", 1:ncol(fit2.L))
+pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L with point-exponential prior \n (greedy all + backfit all, sigma2=0.5")
+
+```
+
+
+### Compare the fits to the covariance matrix
+```{r warning=F}
+### number of factors
+fit1$n.factors
+fit2$n.factors
+
+### elbo
+fit1$elbo
+fit2$elbo
+
+```
