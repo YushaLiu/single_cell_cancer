@@ -91,15 +91,32 @@ pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FAL
 ```
 
 
+### Iteratively add each factor greedily, then take nonnegative transform and backfit that factor (sigma2=1)
+```{r warning=F}
+### fit flash with point exponential prior to XXt 
+fit3 <- readRDS("output/simulations3_update_XXt_fit3_sigma_v1.Rds")
+
+### look at the estimates of L
+fit3.L <- fit3$loadings.pm[[1]]
+fit3.L <- fit3.L[, fit3$pve > 0]
+fit3.L <- t(t(fit3.L)/apply(fit3.L, 2, max))
+colnames(fit3.L) <- paste0("k", 1:ncol(fit3.L))
+pheatmap(fit3.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L with point-exponential prior \n (iteratively greedy + backfit, sigma2=1)")
+
+```
+
+
 ### Compare the fits to the covariance matrix
 ```{r warning=F}
 ### number of factors
 fit1$n.factors
 fit2$n.factors
+fit3$n.factors
 
 ### elbo
 fit1$elbo
 fit2$elbo
+fit3$elbo
 
 ```
 
@@ -162,14 +179,31 @@ pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FAL
 ```
 
 
+### Iteratively add each factor greedily, then take nonnegative transform and backfit that factor (sigma2=0.5)
+```{r warning=F}
+### fit flash with point exponential prior to XXt 
+fit3 <- readRDS("output/simulations3_update_XXt_fit3_sigma_v2.Rds")
+
+### look at the estimates of L
+fit3.L <- fit3$loadings.pm[[1]]
+fit3.L <- fit3.L[, fit3$pve > 0]
+fit3.L <- t(t(fit3.L)/apply(fit3.L, 2, max))
+colnames(fit3.L) <- paste0("k", 1:ncol(fit3.L))
+pheatmap(fit3.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="Estimated L with point-exponential prior \n (iteratively greedy + backfit, sigma2=0.5)")
+
+```
+
+
 ### Compare the fits to the covariance matrix
 ```{r warning=F}
 ### number of factors
 fit1$n.factors
 fit2$n.factors
+fit3$n.factors
 
 ### elbo
 fit1$elbo
 fit2$elbo
+fit3$elbo
 
 ```
