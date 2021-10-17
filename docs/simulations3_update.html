@@ -476,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreeb3dc8a7700b6a41633ed377113ceb9a4d5aa9d29targetblankb3dc8a7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/b3dc8a7700b6a41633ed377113ceb9a4d5aa9d29" target="_blank">b3dc8a7</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreef4baf2c59f8a4767bcbb24afbb90eb5f35274827targetblankf4baf2ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/f4baf2c59f8a4767bcbb24afbb90eb5f35274827" target="_blank">f4baf2c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreeb3dc8a7700b6a41633ed377113ceb9a4d5aa9d29targetblankb3dc8a7a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreef4baf2c59f8a4767bcbb24afbb90eb5f35274827targetblankf4baf2ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/b3dc8a7700b6a41633ed377113ceb9a4d5aa9d29" target="_blank">b3dc8a7</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/f4baf2c59f8a4767bcbb24afbb90eb5f35274827" target="_blank">f4baf2c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -498,6 +498,9 @@ Ignored files:
 
 Untracked files:
     Untracked:  code/simulations.R
+    Untracked:  code/simulations3_update.R
+    Untracked:  output/simulations3_update_XXt_fit3_sigma_v1.Rds
+    Untracked:  output/simulations3_update_XXt_fit3_sigma_v2.Rds
 
 Unstaged changes:
     Modified:   code/util.R
@@ -544,6 +547,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/f4baf2c59f8a4767bcbb24afbb90eb5f35274827/analysis/simulations3_update.Rmd" target="_blank">f4baf2c</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+<td>
+centered the intercept column of F in the simulation design
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/simulations3_update.html" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/YushaLiu/single_cell_cancer/blob/b3dc8a7700b6a41633ed377113ceb9a4d5aa9d29/analysis/simulations3_update.Rmd" target="_blank">b3dc8a7</a>
 </td>
 <td>
@@ -585,8 +622,82 @@ F[,1] &lt;- F[,1] - 10
 ### plot the drift factorization of truth, where F is orthogonal across columns 
 pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;True L&quot;)</code></pre>
 <p><img src="figure/simulations3_update.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/figure/simulations3_update.Rmd/unnamed-chunk-1-1.png" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;True F&quot;)</code></pre>
 <p><img src="figure/simulations3_update.Rmd/unnamed-chunk-1-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
+Past versions of unnamed-chunk-1-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/figure/simulations3_update.Rmd/unnamed-chunk-1-2.png" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="use-true-l-for-initialization-sigma21" class="section level3">
 <h3>Use true L for initialization (sigma2=1)</h3>
 <pre class="r"><code>### simulate data with i.i.d. gaussian errors
@@ -633,6 +744,43 @@ colnames(fit1.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit1.L))
 pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
          main=&quot;Estimated L with point-exponential prior \n (oracle init, sigma2=1)&quot;)</code></pre>
 <p><img src="figure/simulations3_update.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/figure/simulations3_update.Rmd/unnamed-chunk-2-1.png" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="add-all-factors-greedily-then-take-nonnegative-transform-and-backfit-all-factors-sigma21" class="section level3">
 <h3>Add all factors greedily, then take nonnegative transform and backfit all factors (sigma2=1)</h3>
@@ -710,6 +858,56 @@ fit2.L &lt;- t(t(fit2.L)/apply(fit2.L, 2, max))
 colnames(fit2.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit2.L))
 pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;Estimated L with point-exponential prior \n (greedy all + backfit all, sigma2=1&quot;)</code></pre>
 <p><img src="figure/simulations3_update.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/figure/simulations3_update.Rmd/unnamed-chunk-3-1.png" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="iteratively-add-each-factor-greedily-then-take-nonnegative-transform-and-backfit-that-factor-sigma21" class="section level3">
+<h3>Iteratively add each factor greedily, then take nonnegative transform and backfit that factor (sigma2=1)</h3>
+<pre class="r"><code>### fit flash with point exponential prior to XXt 
+fit3 &lt;- readRDS(&quot;output/simulations3_update_XXt_fit3_sigma_v1.Rds&quot;)
+
+### look at the estimates of L
+fit3.L &lt;- fit3$loadings.pm[[1]]
+fit3.L &lt;- fit3.L[, fit3$pve &gt; 0]
+fit3.L &lt;- t(t(fit3.L)/apply(fit3.L, 2, max))
+colnames(fit3.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit3.L))
+pheatmap(fit3.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;Estimated L with point-exponential prior \n (iteratively greedy + backfit, sigma2=1)&quot;)</code></pre>
+<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="compare-the-fits-to-the-covariance-matrix" class="section level3">
 <h3>Compare the fits to the covariance matrix</h3>
@@ -718,11 +916,15 @@ fit1$n.factors</code></pre>
 <pre><code>[1] 9</code></pre>
 <pre class="r"><code>fit2$n.factors</code></pre>
 <pre><code>[1] 16</code></pre>
+<pre class="r"><code>fit3$n.factors</code></pre>
+<pre><code>[1] 11</code></pre>
 <pre class="r"><code>### elbo
 fit1$elbo</code></pre>
 <pre><code>[1] 1493690</code></pre>
 <pre class="r"><code>fit2$elbo</code></pre>
 <pre><code>[1] 1494203</code></pre>
+<pre class="r"><code>fit3$elbo</code></pre>
+<pre><code>[1] 1493824</code></pre>
 </div>
 <div id="use-true-l-for-initialization-sigma20.5" class="section level3">
 <h3>Use true L for initialization (sigma2=0.5)</h3>
@@ -763,7 +965,44 @@ fit1.L &lt;- t(t(fit1.L)/apply(fit1.L, 2, max))
 colnames(fit1.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit1.L))
 pheatmap(fit1.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
          main=&quot;Estimated L with point-exponential prior \n (oracle init, sigma2=0.5)&quot;)</code></pre>
-<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/figure/simulations3_update.Rmd/unnamed-chunk-6-1.png" target="_blank">c422dc9</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2021-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="add-all-factors-greedily-then-take-nonnegative-transform-and-backfit-all-factors-sigma20.5" class="section level3">
 <h3>Add all factors greedily, then take nonnegative transform and backfit all factors (sigma2=0.5)</h3>
@@ -845,7 +1084,20 @@ fit2.L &lt;- fit2.L[, fit2$pve &gt; 0]
 fit2.L &lt;- t(t(fit2.L)/apply(fit2.L, 2, max))
 colnames(fit2.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit2.L))
 pheatmap(fit2.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;Estimated L with point-exponential prior \n (greedy all + backfit all, sigma2=0.5&quot;)</code></pre>
-<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="iteratively-add-each-factor-greedily-then-take-nonnegative-transform-and-backfit-that-factor-sigma20.5" class="section level3">
+<h3>Iteratively add each factor greedily, then take nonnegative transform and backfit that factor (sigma2=0.5)</h3>
+<pre class="r"><code>### fit flash with point exponential prior to XXt 
+fit3 &lt;- readRDS(&quot;output/simulations3_update_XXt_fit3_sigma_v2.Rds&quot;)
+
+### look at the estimates of L
+fit3.L &lt;- fit3$loadings.pm[[1]]
+fit3.L &lt;- fit3.L[, fit3$pve &gt; 0]
+fit3.L &lt;- t(t(fit3.L)/apply(fit3.L, 2, max))
+colnames(fit3.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit3.L))
+pheatmap(fit3.L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;Estimated L with point-exponential prior \n (iteratively greedy + backfit, sigma2=0.5)&quot;)</code></pre>
+<p><img src="figure/simulations3_update.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="compare-the-fits-to-the-covariance-matrix-1" class="section level3">
 <h3>Compare the fits to the covariance matrix</h3>
@@ -854,11 +1106,15 @@ fit1$n.factors</code></pre>
 <pre><code>[1] 10</code></pre>
 <pre class="r"><code>fit2$n.factors</code></pre>
 <pre><code>[1] 12</code></pre>
+<pre class="r"><code>fit3$n.factors</code></pre>
+<pre><code>[1] 11</code></pre>
 <pre class="r"><code>### elbo
 fit1$elbo</code></pre>
 <pre><code>[1] 1942101</code></pre>
 <pre class="r"><code>fit2$elbo</code></pre>
 <pre><code>[1] 1941704</code></pre>
+<pre class="r"><code>fit3$elbo</code></pre>
+<pre><code>[1] 1942274</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
