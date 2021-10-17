@@ -127,8 +127,7 @@ fit.ebcovmf.snn <- function(dat, Kmax){
     snn.cov.init <- init.snn.cov(fit.cov, kset=fit.cov$n.factors)
     
     # fit snn with point exponential prior to XXt without considering the diagonal component for now
-    fit.cov <- flash.init(dat, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)
-    ) %>% flash.backfit(verbose.lvl = 0)
+    fit.cov <- flash.init(dat, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
     
     # fit snn again with the diagonal component
     fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), verbose = 0)$fl
