@@ -17,16 +17,16 @@ init.snn.LL <- function(dat) {
 ### apply the snn to a data matrix with nonnegative constraints on L
 fit.snn <- function(data, Kmax, tol=.Machine$double.eps){
   fit.flashier.pn <- flash.init(data, S = 1/sqrt(nrow(data)), var.type = 2) %>% flash.add.greedy(Kmax = Kmax, 
-  prior.family = prior.point.normal(), tol=tol, verbose.lvl = 1)
+  prior.family = prior.point.laplace(), tol=tol, verbose.lvl = 1)
   
   fit.flashier.pn <- flash.init(data, S = 1/sqrt(nrow(data)), var.type = 2
-  ) %>% flash.init.factors(EF = fit.flashier.pn$flash.fit$EF, EF2 = fit.flashier.pn$flash.fit$EF2, prior.family = prior.point.normal()
+  ) %>% flash.init.factors(EF = fit.flashier.pn$flash.fit$EF, EF2 = fit.flashier.pn$flash.fit$EF2, prior.family = prior.point.laplace()
   ) %>% flash.backfit(verbose.lvl = 1)
   
   snn.init <- init.snn.LL(fit.flashier.pn)
   
   fit.flashier.snn <- flash.init(data, S = 1/sqrt(nrow(data)), var.type = 2
-  ) %>% flash.init.factors(EF = snn.init, prior.family = c(prior.nonnegative(), prior.normal.scale.mix())
+  ) %>% flash.init.factors(EF = snn.init, prior.family = c(as.prior(ebnm::ebnm_point_exponential, sign = 1), prior.point.laplace())
   ) %>% flash.backfit(verbose.lvl = 1)
   
   kset <- (length(fit.flashier.snn$pve) - rank(fit.flashier.snn$pve) < Kmax) & (fit.flashier.snn$pve > 0)
@@ -34,7 +34,7 @@ fit.snn <- function(data, Kmax, tol=.Machine$double.eps){
   fit.flashier.snn <- flash.init(data, S = 1/sqrt(nrow(data)), var.type = 2
   ) %>% flash.init.factors(EF = lapply(fit.flashier.snn$flash.fit$EF, function(x) x[, kset]), 
                            EF2 = lapply(fit.flashier.snn$flash.fit$EF2, function(x) x[, kset]),
-                           prior.family = c(as.prior(ebnm::ebnm_point_exponential, sign = 1), prior.normal.scale.mix())
+                           prior.family = c(as.prior(ebnm::ebnm_point_exponential, sign = 1), prior.point.laplace())
   ) %>% flash.backfit(verbose.lvl = 1)
   
   fit.flashier.snn$sampler <- NULL
