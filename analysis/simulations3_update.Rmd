@@ -1,7 +1,7 @@
 ---
 title: "Application of SNN to covariance matrix of simulated Gaussian data with correlated factors"
 author: "Yusha Liu"
-date: "2021-10-14"
+date: "2021-10-20"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -79,6 +79,12 @@ snn.cov.init <- init.snn.cov(fit2)
 fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
 
 ### fit flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### select a subset of factors and refit
+kset <- (length(fit2$pve) - rank(fit2$pve) < 11) & (fit2$pve > 0)
+kall <- 1:fit2$n.factors
+fit2 <- flash.remove.factors(fit2, kset=kall[!kset])
 fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
 
 ### look at the estimates of L
@@ -167,6 +173,12 @@ snn.cov.init <- init.snn.cov(fit2)
 fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
 
 ### fit flash again with the diagonal component
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### select a subset of factors and refit
+kset <- (length(fit2$pve) - rank(fit2$pve) < 11) & (fit2$pve > 0)
+kall <- 1:fit2$n.factors
+fit2 <- flash.remove.factors(fit2, kset=kall[!kset])
 fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
 
 ### look at the estimates of L
