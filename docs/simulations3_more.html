@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Yusha Liu" />
 
+<meta name="date" content="2021-10-20" />
 
-<title>Home</title>
+<title>Application of SNN to covariance matrix of simulated Gaussian data with correlated factors</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +31,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -230,6 +235,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +305,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -280,7 +358,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Application of SNN to covariance matrix of simulated Gaussian data with correlated factors</h1>
+<h4 class="author">Yusha Liu</h4>
+<h4 class="date">2021-10-20</h4>
 
 </div>
 
@@ -308,7 +388,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2021-10-22
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>single_cell_cancer/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -330,6 +410,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20211008code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20211008)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20211008code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20211008)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -441,7 +581,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/simulations3_more.Rmd</code>) and HTML (<code>docs/simulations3_more.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -470,7 +610,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c79b130f8204447ea53ac28c8b0c0823bc9e61f2/analysis/index.Rmd" target="_blank">c79b130</a>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c79b130f8204447ea53ac28c8b0c0823bc9e61f2/analysis/simulations3_more.Rmd" target="_blank">c79b130</a>
 </td>
 <td>
 yushaliu
@@ -482,210 +622,6 @@ yushaliu
 add more replicates with different levels of noise
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/d666b7644ff1e46438009eb1775f790f610dd762/docs/index.html" target="_blank">d666b76</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/ae5bd6cd4a2974dafd0830373eb0351606fdea77/analysis/index.Rmd" target="_blank">ae5bd6c</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-18
-</td>
-<td>
-add another simulation with samples from two group
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/index.html" target="_blank">c422dc9</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/b3dc8a7700b6a41633ed377113ceb9a4d5aa9d29/analysis/index.Rmd" target="_blank">b3dc8a7</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-17
-</td>
-<td>
-centered the intercept column in simulated F
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/c572d81a36370c31fbbafc4c64a439088a73bde9/docs/index.html" target="_blank">c572d81</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-14
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/0386e741a838e196410c82a9fb4477a869916dda/analysis/index.Rmd" target="_blank">0386e74</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-14
-</td>
-<td>
-add more simulation results applied to covariance matrix
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/de9476edaa14cd1cf701310f95f059bb81c4287a/docs/index.html" target="_blank">de9476e</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/8521977b6b6aac5b5071254ed5a09d5dc68d11fe/analysis/index.Rmd" target="_blank">8521977</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-13
-</td>
-<td>
-update new simulation results
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/16bd4c9742c4cff2e7de61e44d1499eb64e0d50f/docs/index.html" target="_blank">16bd4c9</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/ef5a34c6dea112206c2b3ddea3b1ea3996efc126/docs/index.html" target="_blank">ef5a34c</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/91fc690b4fcaa41c360fe7cc84e08a8f9e57f661/analysis/index.Rmd" target="_blank">91fc690</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Upload some simulations on correlated factors
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/6d87af4a520f734a94f55bfd830fc0298d81be61/analysis/index.Rmd" target="_blank">6d87af4</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -693,8 +629,125 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to my research website.</p>
-<p>Click on this <a href="simulations2.html">link</a> to see application of flash to simulated data with correlated factors. <br /> Click on this <a href="simulations3_update.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors. <br /> Click on this <a href="simulations3_more.html">link</a> to see more replicates of application of flash to covariance matrix of simulated data with correlated factors. <br /> Click on this <a href="twogroup.html">link</a> to see application of flash to covariance matrix of simulated data from two groups with shared factors.</p>
+<div id="simulation-setup" class="section level2">
+<h2>Simulation setup</h2>
+<pre class="r"><code>library(Matrix)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### load in simulated loadings and factors
+L &lt;- readRDS(&quot;data/model.rds&quot;)$L
+F &lt;- readRDS(&quot;data/model.rds&quot;)$F
+F[,1] &lt;- F[,1] - 10
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;True L&quot;)</code></pre>
+<p><img src="figure/simulations3_more.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;True F&quot;)</code></pre>
+<p><img src="figure/simulations3_more.Rmd/unnamed-chunk-1-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="define-plot-functions" class="section level3">
+<h3>Define plot functions</h3>
+<pre class="r"><code># plot posterior mean of L  
+plotL &lt;- function(A.l, title){
+
+  K &lt;- ncol(A.l)
+  n &lt;- nrow(A.l)
+  
+  data.frame(L=c(A.l),
+             factor=rep(1:K, each=n),
+             x=rep(1:n, times=K)) %&gt;%
+    mutate(factor=as.factor(factor)) -&gt; df.plot
+  
+  df.plot %&gt;%
+    ggplot()+
+    geom_line(aes(x=x, y=L, group=factor, col=factor))+
+    facet_wrap(~factor, scales=&#39;free_y&#39;) +ggtitle(title)-&gt; figL
+  
+  print(figL)
+}</code></pre>
+</div>
+<div id="sigma21" class="section level3">
+<h3>sigma2=1</h3>
+<pre class="r"><code>### plot for each replicate
+for(rep in 1:5){
+  fit1 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit1_sigma_1_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit1$loadings.pm[[1]], title=paste0(&quot;oracle init, sigma2=1, rep=&quot;, rep))
+  
+  fit2 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit2_sigma_1_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit2$loadings.pm[[1]], title=paste0(&quot;greedy all + backfit all, sigma2=1, rep=&quot;, rep))
+  
+  fit3 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit3_sigma_1_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit3$loadings.pm[[1]], title=paste0(&quot;greedy + backfit iteratively, sigma2=1, rep=&quot;, rep))
+}</code></pre>
+<p><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-12.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-13.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-14.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-3-15.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="sigma20.25" class="section level3">
+<h3>sigma2=0.25</h3>
+<pre class="r"><code>### plot for each replicate
+for(rep in 1:5){
+  fit1 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit1_sigma_05_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit1$loadings.pm[[1]], title=paste0(&quot;oracle init, sigma2=0.25, rep=&quot;, rep))
+  
+  fit2 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit2_sigma_05_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit2$loadings.pm[[1]], title=paste0(&quot;greedy all + backfit all, sigma2=0.25, rep=&quot;, rep))
+  
+  fit3 &lt;- readRDS(paste0(&quot;output/simulations3_more_XXt_fit3_sigma_05_rep&quot;, rep, &quot;.rds&quot;))
+  plotL(A.l=fit3$loadings.pm[[1]], title=paste0(&quot;greedy + backfit iteratively, sigma2=0.25, rep=&quot;, rep))
+}</code></pre>
+<p><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-8.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-9.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-10.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-11.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-12.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-13.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-14.png" width="672" style="display: block; margin: auto;" /><img src="figure/simulations3_more.Rmd/unnamed-chunk-4-15.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.0 (2021-05-18)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Big Sur 10.16
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.6     purrr_0.3.4    
+ [5] readr_2.0.2     tidyr_1.1.3     tibble_3.1.2    ggplot2_3.3.4  
+ [9] tidyverse_1.3.1 gridExtra_2.3   pheatmap_1.0.12 Matrix_1.3-4   
+[13] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0           lubridate_1.8.0    RColorBrewer_1.1-2 httr_1.4.2        
+ [5] rprojroot_2.0.2    tools_4.1.0        backports_1.2.1    bslib_0.2.5.1     
+ [9] utf8_1.2.1         R6_2.5.0           irlba_2.3.3        DBI_1.1.1         
+[13] colorspace_2.0-1   withr_2.4.2        tidyselect_1.1.1   compiler_4.1.0    
+[17] git2r_0.28.0       cli_3.0.1          rvest_1.0.2        xml2_1.3.2        
+[21] labeling_0.4.2     horseshoe_0.2.0    sass_0.4.0         flashier_0.2.7    
+[25] scales_1.1.1       SQUAREM_2021.1     mixsqp_0.3-43      digest_0.6.27     
+[29] rmarkdown_2.11     deconvolveR_1.2-1  pkgconfig_2.0.3    htmltools_0.5.1.1 
+[33] dbplyr_2.1.1       invgamma_1.1       highr_0.9          rlang_0.4.11      
+[37] readxl_1.3.1       rstudioapi_0.13    farver_2.1.0       jquerylib_0.1.4   
+[41] generics_0.1.0     jsonlite_1.7.2     REBayes_2.2        magrittr_2.0.1    
+[45] Rcpp_1.0.7         munsell_0.5.0      fansi_0.5.0        lifecycle_1.0.0   
+[49] stringi_1.6.2      whisker_0.4        yaml_2.2.1         grid_4.1.0        
+[53] parallel_4.1.0     promises_1.2.0.1   crayon_1.4.1       lattice_0.20-44   
+[57] haven_2.4.3        splines_4.1.0      hms_1.1.0          knitr_1.33        
+[61] pillar_1.6.1       reprex_2.0.1       glue_1.4.2         evaluate_0.14     
+[65] trust_0.1-8        modelr_0.1.8       vctrs_0.3.8        tzdb_0.1.2        
+[69] httpuv_1.6.1       cellranger_1.1.0   gtable_0.3.0       ebnm_0.1-50       
+[73] assertthat_0.2.1   ashr_2.2-47        xfun_0.25          broom_0.7.9       
+[77] later_1.2.0        truncnorm_1.0-8    ellipsis_0.3.2    </code></pre>
+</div>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -712,6 +765,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -744,6 +799,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
