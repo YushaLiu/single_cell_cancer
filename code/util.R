@@ -101,25 +101,44 @@ fit.ebcovmf.kset <- function(dat, fl, prior=prior.point.laplace(), kset=1:ncol(f
 }
 
 
-### run flash to the covariance matrix by adding factors greedily one by one, before backfitting all existing nonnegative factors
-fit.ebcovmf.snn <- function(dat, Kmax){
-  # fit unconstrained flash for K=1 without considering the diagonal component 
-  fit.cov <- flash.init(dat, var.type = 0) %>% flash.add.greedy(Kmax = 1, prior.family = prior.point.laplace(), verbose.lvl = 1
+### run flash to the covariance matrix by adding all factors greedily, then backfitting all of them
+fit.ebcovmf.snn.v1 <- function(dat, Kmax){
+  ### fit unconstrained flash with point Laplace prior to XXt without considering the diagonal component for now
+  fit.cov <- flash.init(dat, var.type = 0) %>% flash.add.greedy(Kmax = Kmax, prior.family = prior.point.laplace(), verbose.lvl = 1
   ) %>% flash.backfit(verbose.lvl = 1)
   
-  # initialize the snn fit based on the unconstrained flash fit 
+  ### fit unconstrained flash again with the diagonal component
+  fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov)$fl
+  
+  ### initialize the nonnegative fit based on the unconstrained flash fit 
   snn.cov.init <- init.snn.cov(fit.cov)
   
-  # fit flash for K=1 with the diagonal component, with point exponential prior on L
-  fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), verbose = 0)$fl
+  ### fit flash with point exponential prior to XXt without considering the diagonal component for now
+  fit.cov <- flash.init(dat, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
   
-  # add one more factor
-  K <- fit.cov$n.factors
-  fit.cov <- flash.add.greedy(fit.cov, Kmax=1, prior.family = prior.point.laplace(), verbose.lvl = 1)
+  ### fit flash again with the diagonal component
+  fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+  
+  ### select a subset of factors and refit
+  kset <- (length(fit.cov$pve) - rank(fit.cov$pve) < Kmax) & (fit.cov$pve > 0)
+  kall <- 1:fit.cov$n.factors
+  if(!all(kset))
+    fit.cov <- flash.remove.factors(fit.cov, kset=kall[!kset])
+  fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+  
+  return(fit.cov)
+}
+
+
+### run flash to the covariance matrix by adding factors greedily one by one, then backfitting all existing nonnegative factors
+fit.ebcovmf.snn <- function(dat, Kmax){
+  # add the first factor
+  K <- 0
+  fit.cov <- flash.init(dat, var.type = 0) %>% flash.add.greedy(Kmax = 1, prior.family = prior.point.laplace(), verbose.lvl = 1)
   
   # add more factors in a greedy manner
   while(fit.cov$n.factors <= Kmax & fit.cov$n.factors==K+1){
-    # backfit the added factor
+    # backfit the newly added factor
     fit.cov <- flash.backfit(fit.cov, kset=K+1, verbose.lvl = 1)
     fit.cov <- fit.ebcovmf.kset(dat=dat, fl=fit.cov, prior=prior.point.laplace(), kset=K+1)$fl
     
@@ -146,25 +165,15 @@ fit.ebcovmf.snn <- function(dat, Kmax){
 } 
 
 
-### run flash to the covariance matrix by adding factors greedily one by one, before backfitting all existing nonnegative factors, another variant
+### another variant to run flash to the covariance matrix by adding factors greedily one by one, then backfitting all existing nonnegative factors
 fit.ebcovmf.snn.v2 <- function(dat, Kmax){
-  # fit unconstrained flash for K=1 without considering the diagonal component 
-  fit.cov <- flash.init(dat, var.type = 0) %>% flash.add.greedy(Kmax = 1, prior.family = prior.point.laplace(), verbose.lvl = 1
-  ) %>% flash.backfit(verbose.lvl = 1)
-  
-  # initialize the snn fit based on the unconstrained flash fit 
-  snn.cov.init <- init.snn.cov(fit.cov)
-  
-  # fit flash for K=1 with the diagonal component, with point exponential prior on L
-  fit.cov <- fit.ebcovmf(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
-  
   # add one more factor
-  K <- fit.cov$n.factors
-  fit.cov <- flash.add.greedy(fit.cov, Kmax=1, prior.family = as.prior(ebnm::ebnm_point_exponential, sign = 1), verbose.lvl = 1)
+  K <- 0
+  fit.cov <- flash.init(dat, var.type = 0) %>% flash.add.greedy(Kmax=1, prior.family = as.prior(ebnm::ebnm_point_exponential, sign = 1), verbose.lvl = 1)
   
   # add one more factor in a greedy manner
   while(fit.cov$n.factors <= Kmax & fit.cov$n.factors==K+1){
-    # backfit the added factor
+    # backfit the newly added factor
     fit.cov <- flash.backfit(fit.cov, kset=K+1, verbose.lvl = 1)
     fit.cov <- fit.ebcovmf.kset(dat=dat, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), kset=K+1)$fl
     
