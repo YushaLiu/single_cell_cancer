@@ -1,0 +1,88 @@
+---
+title: "Application of SNN to covariance matrix of simulated Gaussian data with correlated factors"
+author: "Yusha Liu"
+date: "2021-10-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### load in simulated loadings and factors
+L <- readRDS("data/model.rds")$L
+F <- readRDS("data/model.rds")$F
+F[,1] <- F[,1] - 10
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True L")
+pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main="True F")
+
+```
+
+
+### Define plot functions
+```{r warning=FALSE, message=FALSE}
+
+# plot posterior mean of L  
+plotL <- function(A.l, title){
+
+  K <- ncol(A.l)
+  n <- nrow(A.l)
+  
+  data.frame(L=c(A.l),
+             factor=rep(1:K, each=n),
+             x=rep(1:n, times=K)) %>%
+    mutate(factor=as.factor(factor)) -> df.plot
+  
+  df.plot %>%
+    ggplot()+
+    geom_line(aes(x=x, y=L, group=factor, col=factor))+
+    facet_wrap(~factor, scales='free_y') +ggtitle(title)-> figL
+  
+  print(figL)
+}
+
+
+```
+
+
+### sigma2=1
+```{r warning=F}
+
+### plot for each replicate
+for(rep in 1:5){
+  fit1 <- readRDS(paste0("output/simulations3_more_XXt_fit1_sigma_1_rep", rep, ".rds"))
+  plotL(A.l=fit1$loadings.pm[[1]], title=paste0("oracle init, sigma2=1, rep=", rep))
+  
+  fit2 <- readRDS(paste0("output/simulations3_more_XXt_fit2_sigma_1_rep", rep, ".rds"))
+  plotL(A.l=fit2$loadings.pm[[1]], title=paste0("greedy all + backfit all, sigma2=1, rep=", rep))
+  
+  fit3 <- readRDS(paste0("output/simulations3_more_XXt_fit3_sigma_1_rep", rep, ".rds"))
+  plotL(A.l=fit3$loadings.pm[[1]], title=paste0("greedy + backfit iteratively, sigma2=1, rep=", rep))
+}
+
+```
+
+
+### sigma2=0.25
+```{r warning=F}
+
+### plot for each replicate
+for(rep in 1:5){
+  fit1 <- readRDS(paste0("output/simulations3_more_XXt_fit1_sigma_05_rep", rep, ".rds"))
+  plotL(A.l=fit1$loadings.pm[[1]], title=paste0("oracle init, sigma2=0.25, rep=", rep))
+  
+  fit2 <- readRDS(paste0("output/simulations3_more_XXt_fit2_sigma_05_rep", rep, ".rds"))
+  plotL(A.l=fit2$loadings.pm[[1]], title=paste0("greedy all + backfit all, sigma2=0.25, rep=", rep))
+  
+  fit3 <- readRDS(paste0("output/simulations3_more_XXt_fit3_sigma_05_rep", rep, ".rds"))
+  plotL(A.l=fit3$loadings.pm[[1]], title=paste0("greedy + backfit iteratively, sigma2=0.25, rep=", rep))
+}
+
+```

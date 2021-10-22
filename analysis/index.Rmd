@@ -12,4 +12,5 @@ Welcome to my research website.
 
 Click on this [link](simulations2.html) to see application of flash to simulated data with correlated factors.  <br /> 
 Click on this [link](simulations3_update.html) to see application of flash to covariance matrix of simulated data with correlated factors. <br /> 
+Click on this [link](simulations3_more.html) to see more replicates of application of flash to covariance matrix of simulated data with correlated factors. <br /> 
 Click on this [link](twogroup.html) to see application of flash to covariance matrix of simulated data from two groups with shared factors.
