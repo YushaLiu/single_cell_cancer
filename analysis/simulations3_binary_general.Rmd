@@ -1,0 +1,184 @@
+---
+title: "Application of flash to covariance matrix with oracle initialization (generalized binary prior vs point exponential prior)"
+author: "Yusha Liu"
+date: "2021-11-2"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(ebnm)
+library(flashier)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### load in simulated loadings and factors
+L <- readRDS("data/model.rds")$L
+F <- readRDS("data/model.rds")$F
+F[,1] <- F[,1] - 10
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+plt.L <- pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True L", silent = TRUE)
+plt.F <- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True F", silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+
+### properly rescale L 
+sf <- sqrt(nrow(F)/colSums(F^2))
+init.L <- t(t(L)/sf)
+
+```
+
+
+### Define functions to fit flash to covariance matrix
+```{r warning=FALSE, message=FALSE}
+
+### define the generalized binary prior (1-pi)*delta_0 + pi*N(mu, k^(-2)*mu^2), where k is the ratio of mean to standard deviation
+ebnm_binary_general <- function(x, s, g_init, fix_g, output) {
+  if (!fix_g) {
+    opt_fn <- function(par) {
+      w <- exp(par[1])/(exp(par[1]) + 1)
+      mu <- exp(par[2])
+      sigma <- mu/exp(par[3])
+      g <- ashr::normalmix(c(1-w, w), c(0, mu), c(0, sigma))
+      
+      ebnm_res <- ebnm::ebnm_npmle(x, s, g_init = g, fix_g = TRUE, output = "log_likelihood")
+      return(-ebnm_res$log_likelihood)
+    }
+    
+    opt_res <- optim(par = c(0, 0, log(10)), fn = opt_fn, lower = c(-10, -10, log(10)), upper=c(10, 10, log(100)), method = "L-BFGS-B")
+    w <- exp(opt_res$par[1])/(exp(opt_res$par[1]) + 1)
+    mu <- exp(opt_res$par[2])
+    sigma <- mu/exp(opt_res$par[3])
+    g_init <- ashr::normalmix(c(1-w, w), c(0, mu), c(0, sigma))
+  }
+  
+  return(ebnm::ebnm_npmle(x, s, g_init = g_init, fix_g = TRUE, output = output))
+}
+
+
+### apply flash to covariance matrix XX' s.t. E[XX'] = LL'+ D, where D = sigma2*I
+fit.ebcovmf <- function(dat, fl, prior, method="extrapolate", verbose=1){
+  s2 <- max(0, mean(diag(dat) - diag(fitted(fl))))
+  s2_diff <- Inf
+  
+  # Alternate between estimating s2 and backfitting until convergence.
+  while(s2 > 0 && abs(s2_diff - 1) > 1e-3) {
+    dat_minuss2 <- dat - diag(rep(s2, ncol(dat)))
+    kset <- fl$pve > 0
+    fl <- flash.init(dat_minuss2) %>% flash.init.factors(EF = lapply(fl$flash.fit$EF, function(x) x[, kset, drop = FALSE]),
+          EF2 = lapply(fl$flash.fit$EF2, function(x) x[, kset, drop = FALSE]), prior.family = prior) %>% flash.backfit(
+          warmstart=FALSE, method=method, verbose.lvl = verbose)
+    old_s2 <- s2
+    s2 <- max(0, mean(diag(dat) - diag(fitted(fl))))
+    s2_diff <- s2 / old_s2
+  }
+  
+  return(list(dat=dat, fl=fl, s2=s2))
+}
+
+```
+
+
+### Define plot functions
+```{r warning=FALSE, message=FALSE}
+
+# plot posterior mean of L and F after rescaling
+plotLF <- function(fit, title){
+  fit.L <- fit$loadings.pm[[1]]
+  fit.L <- t(t(fit.L)/apply(fit.L, 2, max))
+  fit.F <- fit$loadings.pm[[2]]
+  fit.F <- t(t(fit.F)/apply(fit.F, 2, max))
+  plt.L <- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1])
+  plt.F <- pheatmap(fit.F, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2])
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+```
+
+
+### rep=1
+```{r warning=F}
+
+### simulate the data
+set.seed(100)
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
+XXt <- X %*% t(X)/ncol(X)
+
+### initialize using true L and a generalized binary prior
+fit1 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), prior.family=as.prior(ebnm_binary_general, sign = 1)) 
+fit1 <- fit.ebcovmf(dat=XXt, fl=fit1, prior=as.prior(ebnm_binary_general, sign = 1), method="sequential", verbose=0)$fl
+
+### initialize using true L and a point exponential prior
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), 
+                                                             prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), method="sequential", verbose=0)$fl
+
+### plot the estimated L and F
+plotLF(fit1, title=c("Estimated L w/ genaral binary prior \n (rep=1, sigma2=1)", "Estimated F w/ genaral binary prior \n (rep=1, sigma2=1)"))
+plotLF(fit2, title=c("Estimated L w/ point exponential prior \n (rep=1, sigma2=1)", "Estimated F w/ point exponential prior \n (rep=1, sigma2=1)"))
+
+### compare the elbo (perhaps not comparable since they have different priors?)
+fit1$elbo
+fit2$elbo
+
+```
+
+
+### rep=2
+```{r warning=F}
+
+### simulate the data
+set.seed(200)
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
+XXt <- X %*% t(X)/ncol(X)
+
+### initialize using true L and a generalized binary prior
+fit1 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), prior.family=as.prior(ebnm_binary_general, sign = 1)) 
+fit1 <- fit.ebcovmf(dat=XXt, fl=fit1, prior=as.prior(ebnm_binary_general, sign = 1), method="sequential", verbose=0)$fl
+
+### initialize using true L and a point exponential prior
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), 
+                                                             prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), method="sequential", verbose=0)$fl
+
+### plot the estimated L and F
+plotLF(fit1, title=c("Estimated L w/ genaral binary prior \n (rep=2, sigma2=1)", "Estimated F w/ genaral binary prior \n (rep=2, sigma2=1)"))
+plotLF(fit2, title=c("Estimated L w/ point exponential prior \n (rep=2, sigma2=1)", "Estimated F w/ point exponential prior \n (rep=2, sigma2=1)"))
+
+### compare the elbo (perhaps not comparable since they have different priors?)
+fit1$elbo
+fit2$elbo
+
+```
+
+
+### rep=3
+```{r warning=F}
+
+### simulate the data
+set.seed(300)
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
+XXt <- X %*% t(X)/ncol(X)
+
+### initialize using true L and a generalized binary prior
+fit1 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), prior.family=as.prior(ebnm_binary_general, sign = 1)) 
+fit1 <- fit.ebcovmf(dat=XXt, fl=fit1, prior=as.prior(ebnm_binary_general, sign = 1), method="sequential", verbose=0)$fl
+
+### initialize using true L and a point exponential prior
+fit2 <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=list(init.L, init.L), 
+                                                             prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+fit2 <- fit.ebcovmf(dat=XXt, fl=fit2, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1), method="sequential", verbose=0)$fl
+
+### plot the estimated L and F
+plotLF(fit1, title=c("Estimated L w/ genaral binary prior \n (rep=3, sigma2=1)", "Estimated F w/ genaral binary prior \n (rep=3, sigma2=1)"))
+plotLF(fit2, title=c("Estimated L w/ point exponential prior \n (rep=3, sigma2=1)", "Estimated F w/ point exponential prior \n (rep=3, sigma2=1)"))
+
+### compare the elbo (perhaps not comparable since they have different priors?)
+fit1$elbo
+fit2$elbo
+
+```
