@@ -475,16 +475,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreec5c86b1e3d085d748a7e4de5b0f531bc684d02d9targetblankc5c86b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/c5c86b1e3d085d748a7e4de5b0f531bc684d02d9" target="_blank">c5c86b1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreece0f3df0b396b443142f4d07f527dee0bbb2db93targetblankce0f3dfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/YushaLiu/single_cell_cancer/tree/ce0f3df0b396b443142f4d07f527dee0bbb2db93" target="_blank">ce0f3df</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreec5c86b1e3d085d748a7e4de5b0f531bc684d02d9targetblankc5c86b1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomYushaLiusinglecellcancertreece0f3df0b396b443142f4d07f527dee0bbb2db93targetblankce0f3dfa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/c5c86b1e3d085d748a7e4de5b0f531bc684d02d9" target="_blank">c5c86b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/YushaLiu/single_cell_cancer/tree/ce0f3df0b396b443142f4d07f527dee0bbb2db93" target="_blank">ce0f3df</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -611,6 +611,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/ce0f3df0b396b443142f4d07f527dee0bbb2db93/analysis/presentation.Rmd" target="_blank">ce0f3df</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+<td>
+Add a motivating example for illustration
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/presentation.html" target="_blank">10bf962</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/YushaLiu/single_cell_cancer/blob/c5c86b1e3d085d748a7e4de5b0f531bc684d02d9/analysis/presentation.Rmd" target="_blank">c5c86b1</a>
 </td>
 <td>
@@ -659,22 +693,95 @@ plt.F &lt;- pheatmap(F.pop[,-1], show_rownames = FALSE, cluster_rows = FALSE, cl
                   main = &quot;True F\n population factorization&quot;, silent = TRUE)
 grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)</code></pre>
 <p><img src="figure/presentation.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/figure/presentation.Rmd/unnamed-chunk-1-1.png" target="_blank">10bf962</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>### plot the drift factorization of truth, where F is orthogonal across columns 
 plt.L &lt;- pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = &quot;True L\n drift factorization&quot;, silent = TRUE)
 plt.F &lt;- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = &quot;True F\n drift factorization&quot;, silent = TRUE)
 grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)</code></pre>
 <p><img src="figure/presentation.Rmd/unnamed-chunk-1-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
+Past versions of unnamed-chunk-1-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/figure/presentation.Rmd/unnamed-chunk-1-2.png" target="_blank">10bf962</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>### simulate the data
 set.seed(100)
 X &lt;- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
 XXt &lt;- X %*% t(X)/ncol(X)</code></pre>
-<div id="define-functions-to-fit-snn" class="section level3">
-<h3>Define functions to fit SNN</h3>
-<pre class="r"><code>source(&quot;code/functions.R&quot;)</code></pre>
 </div>
-<div id="define-plot-functions" class="section level3">
-<h3>Define plot functions</h3>
-<pre class="r"><code># plot posterior mean of L and F after rescaling
+<div id="define-functions-to-fit-snn-and-plot-loading-estimates" class="section level2">
+<h2>Define functions to fit SNN and plot loading estimates</h2>
+<pre class="r"><code>source(&quot;code/functions.R&quot;)
+
+# plot posterior mean of L and F after rescaling
 plotLF &lt;- function(fit, title){
   fit.L &lt;- fit$loadings.pm[[1]][, fit$pve &gt; 0]
   fit.L &lt;- t(t(fit.L)/apply(fit.L, 2, max))
@@ -687,8 +794,8 @@ plotLF &lt;- function(fit, title){
   grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
 }</code></pre>
 </div>
-<div id="fit-snn-to-the-data-matrix" class="section level3">
-<h3>Fit SNN to the data matrix</h3>
+<div id="fit-snn-to-the-data-matrix" class="section level2">
+<h2>Fit SNN to the data matrix</h2>
 <p>As can be seen, SNN fit to the cell <span class="math inline">\(\times\)</span> gene data matrix (point-exponential prior on loadings, point-Laplace prior on factors) yields a population factorization, in which the loadings fail to reveal the similarities among patients.</p>
 <pre class="r"><code>### initialize by running flash without constraints on L
 fit.pn &lt;- flash.init(X, S = 1/sqrt(nrow(X)), var.type = 2) %&gt;% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace()) %&gt;% flash.backfit()</code></pre>
@@ -732,10 +839,10 @@ fit.L &lt;- fit.snn$loadings.pm[[1]][, fit.snn$pve &gt; 0]
 fit.L &lt;- t(t(fit.L)/apply(fit.L, 2, max))
 colnames(fit.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit.L))
 pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, main=&quot;L from SNN fit to data matrix&quot;)</code></pre>
-<p><img src="figure/presentation.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/presentation.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="fit-snn-to-the-covariance-matrix-with-a-point-exponential-prior" class="section level3">
-<h3>Fit SNN to the covariance matrix with a point-exponential prior</h3>
+<div id="fit-snn-to-the-covariance-matrix-with-a-point-exponential-prior" class="section level2">
+<h2>Fit SNN to the covariance matrix with a point-exponential prior</h2>
 <p>To encourage a drift factorization in which the loadings reveal similarities among patients and are thus more informative, we fit SNN to the cell <span class="math inline">\(\times\)</span> cell covariance matrix to estimate the loadings first, and then fit SNN to the cell <span class="math inline">\(\times\)</span> gene data matrix by keeping loadings fixed.</p>
 <pre class="r"><code>### fit unconstrained flash with point Laplace prior to XXt while ignoring the diagonal component for now
 fit.cov &lt;- flash.init(XXt, var.type = 0) %&gt;% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace()) %&gt;% flash.backfit()</code></pre>
@@ -800,10 +907,47 @@ Wrapping up...
 Done.</code></pre>
 <pre class="r"><code>### plot the estimated L and F
 plotLF(fit.cov, title=c(&quot;L from SNN fit to covariance\n point exponential prior)&quot;, &quot;F from SNN fit to covariance\n point exponential prior)&quot;))</code></pre>
-<p><img src="figure/presentation.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/presentation.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/figure/presentation.Rmd/unnamed-chunk-4-1.png" target="_blank">10bf962</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="fit-snn-to-the-covariance-matrix-with-a-generalized-binary-prior" class="section level3">
-<h3>Fit SNN to the covariance matrix with a generalized binary prior</h3>
+</div>
+</div>
+<div id="fit-snn-to-the-covariance-matrix-with-a-generalized-binary-prior" class="section level2">
+<h2>Fit SNN to the covariance matrix with a generalized binary prior</h2>
 <p>In the SNN fit to the covariance matrix with a point-exponential prior, the loadings do reveal similaries among patients, but the solution still looks quite noisy and is not close to the drift factorization desired.</p>
 <p>To fix this, we instead fit SNN to the covariance matrix with a generalized binary prior, which can be expressed as <span class="math display">\[\begin{align}
 g \sim (1-\pi) \delta_0 + \pi N_{[0, \infty)}(\mu, \sigma^2),
@@ -830,7 +974,44 @@ Wrapping up...
 Done.</code></pre>
 <pre class="r"><code>### plot the estimated L and F
 plotLF(fit.cov, title=c(&quot;L from SNN fit to covariance\n general binary prior)&quot;, &quot;F from SNN fit to covariance\n general binary prior)&quot;))</code></pre>
-<p><img src="figure/presentation.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/presentation.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/figure/presentation.Rmd/unnamed-chunk-5-1.png" target="_blank">10bf962</a>
+</td>
+<td>
+yushaliu
+</td>
+<td>
+2022-01-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -879,7 +1060,6 @@ loaded via a namespace (and not attached):
 [65] knitr_1.33         utf8_1.2.1         rprojroot_2.0.2    stringi_1.6.2     
 [69] parallel_4.1.0     SQUAREM_2021.1     Rcpp_1.0.7         vctrs_0.3.8       
 [73] dbplyr_2.1.1       tidyselect_1.1.1   xfun_0.25         </code></pre>
-</div>
 </div>
 </div>
 
