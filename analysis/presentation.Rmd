@@ -48,14 +48,10 @@ XXt <- X %*% t(X)/ncol(X)
 ```
 
 
-### Define functions to fit SNN
+## Define functions to fit SNN and plot loading estimates
 ```{r warning=FALSE, message=FALSE}
+
 source("code/functions.R")
-```
-
-
-### Define plot functions
-```{r warning=FALSE, message=FALSE}
 
 # plot posterior mean of L and F after rescaling
 plotLF <- function(fit, title){
@@ -73,7 +69,7 @@ plotLF <- function(fit, title){
 ```
 
 
-### Fit SNN to the data matrix
+## Fit SNN to the data matrix
 As can be seen, SNN fit to the cell $\times$ gene data matrix (point-exponential prior on loadings, point-Laplace prior on factors) yields a population factorization, in which the loadings fail to reveal the similarities among patients.  
 ```{r warning=F}
 
@@ -95,7 +91,7 @@ pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, main="L from SNN fit
 ```
 
 
-### Fit SNN to the covariance matrix with a point-exponential prior
+## Fit SNN to the covariance matrix with a point-exponential prior
 To encourage a drift factorization in which the loadings reveal similarities among patients and are thus more informative, we fit SNN to the cell $\times$ cell covariance matrix to estimate the loadings first, and then fit SNN to the cell $\times$ gene data matrix by keeping loadings fixed.   
 ```{r warning=F}
 
@@ -120,7 +116,7 @@ plotLF(fit.cov, title=c("L from SNN fit to covariance\n point exponential prior)
 ```
 
 
-### Fit SNN to the covariance matrix with a generalized binary prior 
+## Fit SNN to the covariance matrix with a generalized binary prior 
 In the SNN fit to the covariance matrix with a point-exponential prior, the loadings do reveal similaries among patients, but the solution still looks quite noisy and is not close to the drift factorization desired. 
 
 To fix this, we instead fit SNN to the covariance matrix with a generalized binary prior, which can be expressed as
