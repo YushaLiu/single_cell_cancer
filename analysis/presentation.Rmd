@@ -1,0 +1,143 @@
+---
+title: "Motivating example for application of SNN to single cell cancer data"
+author: "Yusha Liu"
+date: "2022-1-17"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Summary
+We present a toy example which illustrates the characteristics observed in single cell cancer data, which demonstrate strong inter-patient heterogeneity but still share similarities among patients.
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(ebnm)
+library(flashier)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### load in simulated loadings and factors
+L <- readRDS("data/model.rds")$L
+F <- readRDS("data/model.rds")$F
+F[,1] <- F[,1] - 10
+
+### plot the poplulation factorization of truth, where F is orthogonal across columns 
+L.pop <- L[, 1:9]
+F.pop <- F[, 1:9]
+F.pop[,2:5] <- F[,2:5] + F[,10]
+F.pop[,6:9] <- F[,6:9] + F[,11]
+plt.L <- pheatmap(L.pop[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
+                  main = "True L\n population factorization", silent = TRUE)
+plt.F <- pheatmap(F.pop[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, 
+                  main = "True F\n population factorization", silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+plt.L <- pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True L\n drift factorization", silent = TRUE)
+plt.F <- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True F\n drift factorization", silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+
+### simulate the data
+set.seed(100)
+X <- L %*% t(F) + matrix(rnorm(800*2000, 0, 1), nrow=800, ncol=2000)
+XXt <- X %*% t(X)/ncol(X)
+
+```
+
+
+### Define functions to fit SNN
+```{r warning=FALSE, message=FALSE}
+source("code/functions.R")
+```
+
+
+### Define plot functions
+```{r warning=FALSE, message=FALSE}
+
+# plot posterior mean of L and F after rescaling
+plotLF <- function(fit, title){
+  fit.L <- fit$loadings.pm[[1]][, fit$pve > 0]
+  fit.L <- t(t(fit.L)/apply(fit.L, 2, max))
+  colnames(fit.L) <- paste0("k", 1:ncol(fit.L))
+  fit.F <- fit$loadings.pm[[2]][, fit$pve > 0]
+  fit.F <- t(t(fit.F)/apply(fit.F, 2, max))
+  colnames(fit.F) <- paste0("k", 1:ncol(fit.F))
+  plt.L <- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1])
+  plt.F <- pheatmap(fit.F, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2])
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+```
+
+
+### Fit SNN to the data matrix
+As can be seen, SNN fit to the cell $\times$ gene data matrix (point-exponential prior on loadings, point-Laplace prior on factors) yields a population factorization, in which the loadings fail to reveal the similarities among patients.  
+```{r warning=F}
+
+### initialize by running flash without constraints on L
+fit.pn <- flash.init(X, S = 1/sqrt(nrow(X)), var.type = 2) %>% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace()) %>% flash.backfit()
+snn.init <- init.snn.LL(fit.pn)
+
+### run SNN with point exponential prior on L
+fit.snn <- flash.init(X, S = 1/sqrt(nrow(X)), var.type = 2
+) %>% flash.init.factors(EF = snn.init, prior.family = c(as.prior(ebnm::ebnm_point_exponential, sign = 1), prior.point.laplace())
+) %>% flash.backfit()
+
+### plot the estimated L
+fit.L <- fit.snn$loadings.pm[[1]][, fit.snn$pve > 0]
+fit.L <- t(t(fit.L)/apply(fit.L, 2, max))
+colnames(fit.L) <- paste0("k", 1:ncol(fit.L))
+pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, main="L from SNN fit to data matrix")
+
+```
+
+
+### Fit SNN to the covariance matrix with a point-exponential prior
+To encourage a drift factorization in which the loadings reveal similarities among patients and are thus more informative, we fit SNN to the cell $\times$ cell covariance matrix to estimate the loadings first, and then fit SNN to the cell $\times$ gene data matrix by keeping loadings fixed.   
+```{r warning=F}
+
+### fit unconstrained flash with point Laplace prior to XXt while ignoring the diagonal component for now
+fit.cov <- flash.init(XXt, var.type = 0) %>% flash.add.greedy(Kmax = 11, prior.family = prior.point.laplace()) %>% flash.backfit()
+
+### fit unconstrained flash again with the diagonal component
+fit.cov <- fit.ebcovmf(dat=XXt, fl=fit.cov, prior=prior.point.laplace())$fl
+
+### initialize the nonnegative fit based on the unconstrained flash fit 
+snn.cov.init <- init.snn.cov(fit.cov)
+
+### fit flash with point exponential prior to XXt while ignoring the diagonal component for now
+fit.cov <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm::ebnm_point_exponential, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit.cov <- fit.ebcovmf(dat=XXt, fl=fit.cov, prior=as.prior(ebnm::ebnm_point_exponential, sign = 1))$fl
+
+### plot the estimated L and F
+plotLF(fit.cov, title=c("L from SNN fit to covariance\n point exponential prior)", "F from SNN fit to covariance\n point exponential prior)"))
+
+```
+
+
+### Fit SNN to the covariance matrix with a generalized binary prior 
+In the SNN fit to the covariance matrix with a point-exponential prior, the loadings do reveal similaries among patients, but the solution still looks quite noisy and is not close to the drift factorization desired. 
+
+To fix this, we instead fit SNN to the covariance matrix with a generalized binary prior, which can be expressed as
+\begin{align}
+g \sim (1-\pi) \delta_0 + \pi N_{[0, \infty)}(\mu, \sigma^2),
+\end{align}
+where the truncated normal component is highly spiky, i.e., $\frac{\mu}{\sigma}$ is large.
+
+```{r warning=F}
+
+### fit flash with generalized binary prior to XXt while ignoring the diagonal component for now
+fit.cov <- flash.init(XXt, var.type = 0) %>% flash.init.factors(EF=snn.cov.init, prior.family=as.prior(ebnm_binary_general, sign = 1)) 
+
+### fit flash again with the diagonal component
+fit.cov <- fit.ebcovmf(dat=XXt, fl=fit.cov, prior=as.prior(ebnm_binary_general, sign = 1))$fl
+
+### plot the estimated L and F
+plotLF(fit.cov, title=c("L from SNN fit to covariance\n general binary prior)", "F from SNN fit to covariance\n general binary prior)"))
+
+```
