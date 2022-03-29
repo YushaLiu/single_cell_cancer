@@ -16,4 +16,5 @@ Click on this [link](simulations3_more.html) to see more replicates of applicati
 Click on this [link](simulations3_binary_general.html) to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior vs point-exponential prior, using oracle initialization. <br /> 
 Click on this [link](simulations3_binary_general_more.html) to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior vs point-exponential prior, using greedy initialization. <br /> 
 Click on this [link](twogroup.html) to see application of flash to covariance matrix of simulated data from two groups with shared factors. <br /> 
-Click on this [link](presentation.html) to see illustration of a motivating example to analysis of single cell cancer data.
+Click on this [link](presentation.html) to see illustration of a motivating example to analysis of single cell cancer data.  <br /> 
+Click on this [link](simulations3_general_binary_normalmix.html) to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior. <br /> 

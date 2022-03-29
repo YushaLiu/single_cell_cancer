@@ -1,0 +1,226 @@
+---
+title: "Application of flash to covariance matrix with generalized binary prior"
+author: "Yusha Liu"
+date: "2022-3-29"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Summary
+We fit flash to the covariance matrix with generalized binary prior on each loading/factor, i.e, $l_k \sim g_{lk}$ and $f_k \sim g_{fk}$ such that
+\begin{align}
+g \sim (1-\pi) N(\mu_1, \sigma^2) + \pi N(\mu_2, \sigma^2),
+\end{align}
+where $\frac{\mu_2 - \mu_1}{\sigma}$ is large. 
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(flashier)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### load in simulated loadings and factors
+L <- readRDS("data/model.rds")$L
+F <- readRDS("data/model.rds")$F
+F[,1] <- F[,1] - 10
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+plt.L <- pheatmap(L[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True L", silent = TRUE)
+plt.F <- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True F", silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+
+```
+
+
+
+### Define plot functions
+```{r warning=FALSE, message=FALSE}
+
+### define the function to plot original L and F
+plotLF <- function(fit.cov, title){
+  fit.L <- fit.cov$L.pm[, order(fit.cov$pve, decreasing = TRUE)]
+  colnames(fit.L) <- paste0("k", 1:ncol(fit.L))
+  fit.F <- fit.cov$F.pm[, order(fit.cov$pve, decreasing = TRUE)]
+  colnames(fit.F) <- paste0("k", 1:ncol(fit.F))
+  plt.L <- pheatmap(fit.L[, -1], cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1])
+  plt.F <- pheatmap(fit.F[, -1], cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2])
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+### define the function to plot scaled L and F
+plotLF_scaled <- function(fit.cov, title){
+  k.order <- order(fit.cov$pve, decreasing = TRUE)
+  fit.L <- fit.cov$L.pm[, k.order]
+  fit.F <- fit.cov$F.pm[, k.order]
+  fit.L <- fit.L[, apply(fit.L, 2, sd)!=0]
+  fit.F <- fit.F[, apply(fit.F, 2, sd)!=0]
+  new.L <- fit.L[, -1]
+  new.F <- fit.F[, -1]
+  colnames(new.L) <- paste0("k", 2:ncol(fit.L))
+  colnames(new.F) <- paste0("k", 2:ncol(fit.F))
+  
+  for(k in 2:ncol(fit.L)){
+    k.cur <- k.order[k]
+    new.L[, k-1] <- (fit.L[,k] - fit.cov$L.ghat[[k.cur]]$mean[1])/(fit.cov$L.ghat[[k.cur]]$mean[2] - fit.cov$L.ghat[[k.cur]]$mean[1])
+    new.F[, k-1] <- (fit.F[,k] - fit.cov$F.ghat[[k.cur]]$mean[1])/(fit.cov$F.ghat[[k.cur]]$mean[2] - fit.cov$F.ghat[[k.cur]]$mean[1])
+  }
+  
+  plt.L <- pheatmap(new.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main = title[1])
+  plt.F <- pheatmap(new.F, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main = title[2])
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+```
+
+
+### rep=1, ratio=10
+```{r warning=F}
+
+### fit flash with general binary prior by initialization using truth followed by backfit
+fit1 <- readRDS("output/general_binary_prior_rep1_init1.Rds")
+
+### fit flash with general binary prior by adding all factors greedily then backfitting 
+fit2 <- readRDS("output/general_binary_prior_rep1_init2.Rds")
+
+### fit flash with general binary prior by adding each factor greedily before backfitting all existing factors
+fit3 <- readRDS("output/general_binary_prior_rep1_init3.Rds")
+
+### compare the elbo
+fit1$elbo
+fit2$elbo
+fit3$elbo
+
+### plot the estimated L and F on the original scale
+plotLF(fit1, title=c("rep1: estimated L (oracle init)", "rep1: estimated F (oracle init)"))
+plotLF(fit2, title=c("rep1: estimated L \n (greedy all + backfit all)", "rep1: estimated F \n (greedy all + backfit all)"))
+plotLF(fit3, title=c("rep1: estimated L \n (greedy each + backfit each)", "rep1: estimated F \n (greedy each + backfit each)"))
+
+### plot the estimated L and F on the rescaled scale
+plotLF_scaled(fit1, title=c("rep1: estimated rescaled L (oracle init)", "rep1: estimated rescaled F (oracle init)"))
+plotLF_scaled(fit2, title=c("rep1: estimated rescaled L \n (greedy all + backfit all)", "rep1: estimated rescaled F \n (greedy all + backfit all)"))
+plotLF_scaled(fit3, title=c("rep1: estimated rescaled L \n (greedy each + backfit each)", "rep1: estimated rescaled F \n (greedy each + backfit each)"))
+
+```
+
+
+### rep=2, ratio=10
+```{r warning=F}
+
+### fit flash with general binary prior by initialization using truth followed by backfit
+fit1 <- readRDS("output/general_binary_prior_rep2_init1.Rds")
+
+### fit flash with general binary prior by adding all factors greedily then backfitting 
+fit2 <- readRDS("output/general_binary_prior_rep2_init2.Rds")
+
+### fit flash with general binary prior by adding each factor greedily before backfitting all existing factors
+fit3 <- readRDS("output/general_binary_prior_rep2_init3.Rds")
+
+### compare the elbo
+fit1$elbo
+fit2$elbo
+fit3$elbo
+
+### plot the estimated L and F on the original scale
+plotLF(fit1, title=c("rep2: estimated L (oracle init)", "rep2: estimated F (oracle init)"))
+plotLF(fit2, title=c("rep2: estimated L \n (greedy all + backfit all)", "rep2: estimated F \n (greedy all + backfit all)"))
+plotLF(fit3, title=c("rep2: estimated L \n (greedy each + backfit each)", "rep2: estimated F \n (greedy each + backfit each)"))
+
+### plot the estimated L and F on the rescaled scale
+plotLF_scaled(fit1, title=c("rep2: estimated rescaled L (oracle init)", "rep2: estimated rescaled F (oracle init)"))
+plotLF_scaled(fit2, title=c("rep2: estimated rescaled L \n (greedy all + backfit all)", "rep2: estimated rescaled F \n (greedy all + backfit all)"))
+plotLF_scaled(fit3, title=c("rep2: estimated rescaled L \n (greedy each + backfit each)", "rep2: estimated rescaled F \n (greedy each + backfit each)"))
+
+```
+
+
+### rep=3, ratio=10
+```{r warning=F}
+
+### fit flash with general binary prior by initialization using truth followed by backfit
+fit1 <- readRDS("output/general_binary_prior_rep3_init1.Rds")
+
+### fit flash with general binary prior by adding all factors greedily then backfitting 
+fit2 <- readRDS("output/general_binary_prior_rep3_init2.Rds")
+
+### fit flash with general binary prior by adding each factor greedily before backfitting all existing factors
+fit3 <- readRDS("output/general_binary_prior_rep3_init3.Rds")
+
+### compare the elbo
+fit1$elbo
+fit2$elbo
+fit3$elbo
+
+### plot the estimated L and F on the original scale
+plotLF(fit1, title=c("rep3: estimated L (oracle init)", "rep3: estimated F (oracle init)"))
+plotLF(fit2, title=c("rep3: estimated L \n (greedy all + backfit all)", "rep3: estimated F \n (greedy all + backfit all)"))
+plotLF(fit3, title=c("rep3: estimated L \n (greedy each + backfit each)", "rep3: estimated F \n (greedy each + backfit each)"))
+
+### plot the estimated L and F on the rescaled scale
+plotLF_scaled(fit1, title=c("rep3: estimated rescaled L (oracle init)", "rep3: estimated rescaled F (oracle init)"))
+plotLF_scaled(fit2, title=c("rep3: estimated rescaled L \n (greedy all + backfit all)", "rep3: estimated rescaled F \n (greedy all + backfit all)"))
+plotLF_scaled(fit3, title=c("rep3: estimated rescaled L \n (greedy each + backfit each)", "rep3: estimated rescaled F \n (greedy each + backfit each)"))
+
+```
+
+
+### rep=1, ratio=20
+```{r warning=F}
+
+### fit flash with general binary prior by initialization using truth followed by backfit
+fit1 <- readRDS("output/general_binary_prior_v2_rep1_init1.Rds")
+
+### fit flash with general binary prior by adding all factors greedily then backfitting 
+fit2 <- readRDS("output/general_binary_prior_v2_rep1_init2.Rds")
+
+### fit flash with general binary prior by adding each factor greedily before backfitting all existing factors
+fit3 <- readRDS("output/general_binary_prior_v2_rep1_init3.Rds")
+
+### compare the elbo
+fit1$elbo
+fit2$elbo
+fit3$elbo
+
+### plot the estimated L and F on the original scale
+plotLF(fit1, title=c("rep1: estimated L (oracle init)", "rep1: estimated F (oracle init)"))
+plotLF(fit2, title=c("rep1: estimated L \n (greedy all + backfit all)", "rep1: estimated F \n (greedy all + backfit all)"))
+plotLF(fit3, title=c("rep1: estimated L \n (greedy each + backfit each)", "rep1: estimated F \n (greedy each + backfit each)"))
+
+### plot the estimated L and F on the rescaled scale
+plotLF_scaled(fit1, title=c("rep1: estimated rescaled L (oracle init)", "rep1: estimated rescaled F (oracle init)"))
+plotLF_scaled(fit2, title=c("rep1: estimated rescaled L \n (greedy all + backfit all)", "rep1: estimated rescaled F \n (greedy all + backfit all)"))
+plotLF_scaled(fit3, title=c("rep1: estimated rescaled L \n (greedy each + backfit each)", "rep1: estimated rescaled F \n (greedy each + backfit each)"))
+
+```
+
+
+### rep=2, ratio=20
+```{r warning=F}
+
+### fit flash with general binary prior by initialization using truth followed by backfit
+fit1 <- readRDS("output/general_binary_prior_v2_rep2_init1.Rds")
+
+### fit flash with general binary prior by adding all factors greedily then backfitting 
+fit2 <- readRDS("output/general_binary_prior_v2_rep2_init2.Rds")
+
+### fit flash with general binary prior by adding each factor greedily before backfitting all existing factors
+fit3 <- readRDS("output/general_binary_prior_v2_rep2_init3.Rds")
+
+### compare the elbo
+fit1$elbo
+fit2$elbo
+fit3$elbo
+
+### plot the estimated L and F on the original scale
+plotLF(fit1, title=c("rep2: estimated L (oracle init)", "rep2: estimated F (oracle init)"))
+plotLF(fit2, title=c("rep2: estimated L \n (greedy all + backfit all)", "rep2: estimated F \n (greedy all + backfit all)"))
+plotLF(fit3, title=c("rep2: estimated L \n (greedy each + backfit each)", "rep2: estimated F \n (greedy each + backfit each)"))
+
+### plot the estimated L and F on the rescaled scale
+plotLF_scaled(fit1, title=c("rep2: estimated rescaled L (oracle init)", "rep2: estimated rescaled F (oracle init)"))
+plotLF_scaled(fit2, title=c("rep2: estimated rescaled L \n (greedy all + backfit all)", "rep2: estimated rescaled F \n (greedy all + backfit all)"))
+plotLF_scaled(fit3, title=c("rep2: estimated rescaled L \n (greedy each + backfit each)", "rep2: estimated rescaled F \n (greedy each + backfit each)"))
+
+```
