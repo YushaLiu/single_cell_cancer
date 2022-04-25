@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Yusha Liu" />
 
 
-<title>Home</title>
+<title>Application of flash to simulated data (setting 1)</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +30,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -230,6 +234,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +304,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -280,7 +357,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Application of flash to simulated data (setting 1)</h1>
+<h4 class="author">Yusha Liu</h4>
+<h4 class="date">2022-4-25</h4>
 
 </div>
 
@@ -308,7 +387,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2022-04-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>single_cell_cancer/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -330,6 +409,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20211008code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20211008)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20211008code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20211008)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -522,7 +661,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML (<code>docs/index.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/setting1.Rmd</code>) and HTML (<code>docs/setting1.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -551,7 +690,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/6ee0c309543f634dac39dca5f8a2af3efefe6102/analysis/index.Rmd" target="_blank">6ee0c30</a>
+<a href="https://github.com/YushaLiu/single_cell_cancer/blob/6ee0c309543f634dac39dca5f8a2af3efefe6102/analysis/setting1.Rmd" target="_blank">6ee0c30</a>
 </td>
 <td>
 yushaliu
@@ -563,380 +702,6 @@ yushaliu
 Add more simulation results
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/9c8fc65aa312a2ba4713a96086949f05d2dc8aad/docs/index.html" target="_blank">9c8fc65</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2022-03-29
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/8d3c1b65875fe603c8029795aa39ab9fe4785a36/analysis/index.Rmd" target="_blank">8d3c1b6</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2022-03-29
-</td>
-<td>
-Add simulation results for generalized binary prior
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/10bf962a6f014ec46fed0acaed26a0f4086f3ad4/docs/index.html" target="_blank">10bf962</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2022-01-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c5c86b1e3d085d748a7e4de5b0f531bc684d02d9/analysis/index.Rmd" target="_blank">c5c86b1</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2022-01-17
-</td>
-<td>
-Add a motivating example for illustration
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/818ad58dec5691abd1aa84e0647f72002479b71b/docs/index.html" target="_blank">818ad58</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-11-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/e7588e08713ee70f356582d6b9b9e06c84364346/analysis/index.Rmd" target="_blank">e7588e0</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-11-08
-</td>
-<td>
-update more simulation results with generalized binary prior
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/df2e759dfcc39c868a4c1e8ec7fe0b61cebc3dff/docs/index.html" target="_blank">df2e759</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-11-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/066166d3357144e6943b5f5523ed582fb81d408f/analysis/index.Rmd" target="_blank">066166d</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-11-03
-</td>
-<td>
-add flash fitting with generalized binary prior
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/97427831f381668eafc400d7eff30a5c7f6295dc/docs/index.html" target="_blank">9742783</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/c79b130f8204447ea53ac28c8b0c0823bc9e61f2/analysis/index.Rmd" target="_blank">c79b130</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-22
-</td>
-<td>
-add more replicates with different levels of noise
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/d666b7644ff1e46438009eb1775f790f610dd762/docs/index.html" target="_blank">d666b76</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/ae5bd6cd4a2974dafd0830373eb0351606fdea77/analysis/index.Rmd" target="_blank">ae5bd6c</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-18
-</td>
-<td>
-add another simulation with samples from two group
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/c422dc9c8cf3e53f6a090f4a545a612c5b0de423/docs/index.html" target="_blank">c422dc9</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/b3dc8a7700b6a41633ed377113ceb9a4d5aa9d29/analysis/index.Rmd" target="_blank">b3dc8a7</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-17
-</td>
-<td>
-centered the intercept column in simulated F
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/c572d81a36370c31fbbafc4c64a439088a73bde9/docs/index.html" target="_blank">c572d81</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-14
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/0386e741a838e196410c82a9fb4477a869916dda/analysis/index.Rmd" target="_blank">0386e74</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-14
-</td>
-<td>
-add more simulation results applied to covariance matrix
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/de9476edaa14cd1cf701310f95f059bb81c4287a/docs/index.html" target="_blank">de9476e</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/8521977b6b6aac5b5071254ed5a09d5dc68d11fe/analysis/index.Rmd" target="_blank">8521977</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-13
-</td>
-<td>
-update new simulation results
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/16bd4c9742c4cff2e7de61e44d1499eb64e0d50f/docs/index.html" target="_blank">16bd4c9</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/YushaLiu/single_cell_cancer/ef5a34c6dea112206c2b3ddea3b1ea3996efc126/docs/index.html" target="_blank">ef5a34c</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/91fc690b4fcaa41c360fe7cc84e08a8f9e57f661/analysis/index.Rmd" target="_blank">91fc690</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Upload some simulations on correlated factors
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/YushaLiu/single_cell_cancer/blob/6d87af4a520f734a94f55bfd830fc0298d81be61/analysis/index.Rmd" target="_blank">6d87af4</a>
-</td>
-<td>
-yushaliu
-</td>
-<td>
-2021-10-08
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -944,8 +709,176 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to my research website.</p>
-<p>Click on this <a href="simulations2.html">link</a> to see application of flash to simulated data with correlated factors. <br /> Click on this <a href="simulations3_update.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors. <br /> Click on this <a href="simulations3_more.html">link</a> to see more replicates of application of flash to covariance matrix of simulated data with correlated factors. <br /> Click on this <a href="simulations3_binary_general.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior vs point-exponential prior, using oracle initialization. <br /> Click on this <a href="simulations3_binary_general_more.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior vs point-exponential prior, using greedy initialization. <br /> Click on this <a href="twogroup.html">link</a> to see application of flash to covariance matrix of simulated data from two groups with shared factors. <br /> Click on this <a href="presentation.html">link</a> to see illustration of a motivating example to analysis of single cell cancer data. <br /> Click on this <a href="simulations3_general_binary_normalmix.html">link</a> to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior. <br /> Click on this <a href="setting1.html">link</a> to see application of flash to simulated data which come from three groups, with two groups sharing similarity. <br /> Click on this <a href="setting2.html">link</a> to see application of flash to simulated data which come from 3 groups, where group 1 further consists of 3 subgroups. <br /></p>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>We apply NN (nonnegative factorization), SNN (semi-nonnegative factorization) to simulated Gaussian data which take nonnegative values, and also apply NN to the covariance matrix of simulated data. Simulated data are generated from different groups, with some of them sharing similarity. We are interested in comparing the solutions of different factorization strategies, in particular their performance in recovering the loading matrix <span class="math inline">\(L\)</span>. We place a generalized binary prior on <span class="math inline">\(L\)</span> if not explicitly stated otherwise.</p>
+</div>
+<div id="simulation-setup" class="section level2">
+<h2>Simulation setup</h2>
+<pre class="r"><code>library(Matrix)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### simulate data which come from three groups, with two groups sharing similarity
+set.seed(1)
+
+### simulate loadings
+L &lt;- matrix(0, nrow=900, ncol=5)
+L[,1] &lt;- 1
+L[1:600,2] &lt;- 1
+L[1:300,3] &lt;- 1
+L[301:600,4] &lt;- 1
+L[601:900,5] &lt;- 1
+colnames(L) &lt;- paste0(&quot;k&quot;, 1:ncol(L))
+
+### simulate factors 
+F &lt;- matrix(0, nrow=1500, ncol=5)
+F[,1] &lt;- rnorm(1500, 20, 2)
+F[1:200,2] &lt;- rnorm(200, 0, 1)
+F[201:300,3] &lt;- rnorm(100, 0, 1)
+F[301:400,4] &lt;- rnorm(100, 0, 1)
+F[401:600,5] &lt;- rnorm(200, 0, 1)
+colnames(F) &lt;- paste0(&quot;k&quot;, 1:ncol(F))
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+plt.L &lt;- pheatmap(L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = &quot;True L&quot;, silent = TRUE)
+plt.F &lt;- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = &quot;True F&quot;, silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="define-plot-functions" class="section level2">
+<h2>Define plot functions</h2>
+<pre class="r"><code># plot posterior mean of L and F for data factorization solution
+plotLF_data &lt;- function(fit, title){
+  fit.L &lt;- fit$L.pm[, fit$pve!=0]
+  scaling &lt;- apply(fit.L, 2, max)
+  fit.L &lt;- t(t(fit.L)/scaling)
+  fit.F &lt;- fit$F.pm[, fit$pve!=0]
+  fit.F &lt;- t(t(fit.F)*scaling)
+  colnames(fit.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit.L))
+  colnames(fit.F) &lt;- paste0(&quot;k&quot;, 1:ncol(fit.F))
+  plt.L &lt;- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1], fontsize=8)
+  plt.F &lt;- pheatmap(fit.F[,-1], cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2], fontsize=8)
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+# plot posterior mean of L and F for covariance factorization solution
+plotLF_cov &lt;- function(fit, title){
+  fit.L &lt;- fit$L.pm[, fit$pve!=0]
+  fit.L &lt;- t(t(fit.L)/apply(fit.L, 2, max))
+  fit.F &lt;- fit$F.pm[, fit$pve!=0]
+  fit.F &lt;- t(t(fit.F)/apply(fit.F, 2, max))
+  colnames(fit.L) &lt;- paste0(&quot;k&quot;, 1:ncol(fit.L))
+  colnames(fit.F) &lt;- paste0(&quot;k&quot;, 1:ncol(fit.F))
+  plt.L &lt;- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1], fontsize=8)
+  plt.F &lt;- pheatmap(fit.F, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2], fontsize=8)
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}</code></pre>
+</div>
+<div id="rep1" class="section level2">
+<h2>rep=1</h2>
+<pre class="r"><code>### fit NN to data matrix
+fit.nn &lt;- readRDS(&quot;output/setting1_iter1_nn.rds&quot;)
+plotLF_data(fit.nn, title=c(&quot;Estimated L from NN to data&quot;, &quot;Estimated F from NN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit SNN to data matrix
+fit.snn &lt;- readRDS(&quot;output/setting1_iter1_snn.rds&quot;)
+plotLF_data(fit.snn, title=c(&quot;Estimated L from SNN to data&quot;, &quot;Estimated F from SNN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 &lt;- readRDS(&quot;output/setting1_iter1_cov.rds&quot;)
+plotLF_cov(fit.cov.v1, title=c(&quot;Estimated L from SNN to covariance \n with point exponential prior&quot;, &quot;Estimated F from SNN to covariance \n with point exponential prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with generalized binary prior
+fit.cov &lt;- readRDS(&quot;output/setting1_iter1_cov_binary.rds&quot;)
+plotLF_cov(fit.cov, title=c(&quot;Estimated L from SNN to covariance \n with general binary prior&quot;, &quot;Estimated F from SNN to covariance \n with general binary prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-3-4.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rep2" class="section level2">
+<h2>rep=2</h2>
+<pre class="r"><code>### fit NN to data matrix
+fit.nn &lt;- readRDS(&quot;output/setting1_iter2_nn.rds&quot;)
+plotLF_data(fit.nn, title=c(&quot;Estimated L from NN to data&quot;, &quot;Estimated F from NN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit SNN to data matrix
+fit.snn &lt;- readRDS(&quot;output/setting1_iter2_snn.rds&quot;)
+plotLF_data(fit.snn, title=c(&quot;Estimated L from SNN to data&quot;, &quot;Estimated F from SNN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 &lt;- readRDS(&quot;output/setting1_iter2_cov.rds&quot;)
+plotLF_cov(fit.cov.v1, title=c(&quot;Estimated L from SNN to covariance \n with point exponential prior&quot;, &quot;Estimated F from SNN to covariance \n with point exponential prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with generalized binary prior
+fit.cov &lt;- readRDS(&quot;output/setting1_iter2_cov_binary.rds&quot;)
+plotLF_cov(fit.cov, title=c(&quot;Estimated L from SNN to covariance \n with general binary prior&quot;, &quot;Estimated F from SNN to covariance \n with general binary prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-4-4.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rep3" class="section level2">
+<h2>rep=3</h2>
+<pre class="r"><code>### fit NN to data matrix
+fit.nn &lt;- readRDS(&quot;output/setting1_iter3_nn.rds&quot;)
+plotLF_data(fit.nn, title=c(&quot;Estimated L from NN to data&quot;, &quot;Estimated F from NN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit SNN to data matrix
+fit.snn &lt;- readRDS(&quot;output/setting1_iter3_snn.rds&quot;)
+plotLF_data(fit.snn, title=c(&quot;Estimated L from SNN to data&quot;, &quot;Estimated F from SNN to data&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 &lt;- readRDS(&quot;output/setting1_iter3_cov.rds&quot;)
+plotLF_cov(fit.cov.v1, title=c(&quot;Estimated L from SNN to covariance \n with point exponential prior&quot;, &quot;Estimated F from SNN to covariance \n with point exponential prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>### fit NN to covariance matrix with generalized binary prior
+fit.cov &lt;- readRDS(&quot;output/setting1_iter3_cov_binary.rds&quot;)
+plotLF_cov(fit.cov, title=c(&quot;Estimated L from SNN to covariance \n with general binary prior&quot;, &quot;Estimated F from SNN to covariance \n with general binary prior&quot;))</code></pre>
+<p><img src="figure/setting1.Rmd/unnamed-chunk-5-4.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.0 (2021-05-18)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Big Sur 10.16
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.6     purrr_0.3.4    
+ [5] readr_2.0.2     tidyr_1.1.3     tibble_3.1.2    ggplot2_3.3.4  
+ [9] tidyverse_1.3.1 gridExtra_2.3   pheatmap_1.0.12 Matrix_1.3-4   
+[13] workflowr_1.6.2
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.7         lubridate_1.8.0    lattice_0.20-44    assertthat_0.2.1  
+ [5] rprojroot_2.0.2    digest_0.6.27      utf8_1.2.1         R6_2.5.0          
+ [9] cellranger_1.1.0   backports_1.2.1    reprex_2.0.1       evaluate_0.14     
+[13] highr_0.9          httr_1.4.2         pillar_1.6.1       rlang_0.4.11      
+[17] readxl_1.3.1       rstudioapi_0.13    whisker_0.4        jquerylib_0.1.4   
+[21] rmarkdown_2.11     munsell_0.5.0      broom_0.7.9        compiler_4.1.0    
+[25] httpuv_1.6.1       modelr_0.1.8       xfun_0.25          pkgconfig_2.0.3   
+[29] htmltools_0.5.1.1  tidyselect_1.1.1   fansi_0.5.0        crayon_1.4.1      
+[33] tzdb_0.1.2         dbplyr_2.1.1       withr_2.4.2        later_1.2.0       
+[37] grid_4.1.0         jsonlite_1.7.2     gtable_0.3.0       lifecycle_1.0.0   
+[41] DBI_1.1.1          git2r_0.28.0       magrittr_2.0.1     scales_1.1.1      
+[45] cli_3.0.1          stringi_1.6.2      fs_1.5.0           promises_1.2.0.1  
+[49] xml2_1.3.2         bslib_0.2.5.1      ellipsis_0.3.2     generics_0.1.0    
+[53] vctrs_0.3.8        RColorBrewer_1.1-2 tools_4.1.0        glue_1.4.2        
+[57] hms_1.1.0          yaml_2.2.1         colorspace_2.0-1   rvest_1.0.2       
+[61] knitr_1.33         haven_2.4.3        sass_0.4.0        </code></pre>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -963,6 +896,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -995,6 +930,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
