@@ -1,0 +1,145 @@
+---
+title: "Application of flash to simulated data (setting 1)"
+author: "Yusha Liu"
+date: "2022-4-25"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Summary
+We apply NN (nonnegative factorization), SNN (semi-nonnegative factorization) to simulated Gaussian data which take nonnegative values, and also apply NN to the covariance matrix of simulated data. Simulated data are generated from different groups, with some of them sharing similarity. We are interested in comparing the solutions of different factorization strategies, in particular their performance in recovering the loading matrix $L$. We place a generalized binary prior on $L$ if not explicitly stated otherwise.
+
+## Simulation setup
+```{r warning=FALSE, message=FALSE}
+library(Matrix)
+library(pheatmap)
+library(gridExtra)
+library(tidyverse)
+
+### simulate data which come from three groups, with two groups sharing similarity
+set.seed(1)
+
+### simulate loadings
+L <- matrix(0, nrow=900, ncol=5)
+L[,1] <- 1
+L[1:600,2] <- 1
+L[1:300,3] <- 1
+L[301:600,4] <- 1
+L[601:900,5] <- 1
+colnames(L) <- paste0("k", 1:ncol(L))
+
+### simulate factors 
+F <- matrix(0, nrow=1500, ncol=5)
+F[,1] <- rnorm(1500, 20, 2)
+F[1:200,2] <- rnorm(200, 0, 1)
+F[201:300,3] <- rnorm(100, 0, 1)
+F[301:400,4] <- rnorm(100, 0, 1)
+F[401:600,5] <- rnorm(200, 0, 1)
+colnames(F) <- paste0("k", 1:ncol(F))
+
+### plot the drift factorization of truth, where F is orthogonal across columns 
+plt.L <- pheatmap(L, show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True L", silent = TRUE)
+plt.F <- pheatmap(F[,-1], show_rownames = FALSE, cluster_rows = FALSE, cluster_cols = FALSE, main = "True F", silent = TRUE)
+grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+
+```
+
+
+## Define plot functions
+```{r warning=FALSE, message=FALSE}
+
+# plot posterior mean of L and F for data factorization solution
+plotLF_data <- function(fit, title){
+  fit.L <- fit$L.pm[, fit$pve!=0]
+  scaling <- apply(fit.L, 2, max)
+  fit.L <- t(t(fit.L)/scaling)
+  fit.F <- fit$F.pm[, fit$pve!=0]
+  fit.F <- t(t(fit.F)*scaling)
+  colnames(fit.L) <- paste0("k", 1:ncol(fit.L))
+  colnames(fit.F) <- paste0("k", 1:ncol(fit.F))
+  plt.L <- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1], fontsize=8)
+  plt.F <- pheatmap(fit.F[,-1], cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2], fontsize=8)
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+# plot posterior mean of L and F for covariance factorization solution
+plotLF_cov <- function(fit, title){
+  fit.L <- fit$L.pm[, fit$pve!=0]
+  fit.L <- t(t(fit.L)/apply(fit.L, 2, max))
+  fit.F <- fit$F.pm[, fit$pve!=0]
+  fit.F <- t(t(fit.F)/apply(fit.F, 2, max))
+  colnames(fit.L) <- paste0("k", 1:ncol(fit.L))
+  colnames(fit.F) <- paste0("k", 1:ncol(fit.F))
+  plt.L <- pheatmap(fit.L, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[1], fontsize=8)
+  plt.F <- pheatmap(fit.F, cluster_rows = FALSE, cluster_cols = FALSE, silent = TRUE, main=title[2], fontsize=8)
+  grid.arrange(plt.L$gtable, plt.F$gtable, ncol=2)
+}
+
+```
+
+
+## rep=1
+```{r warning=F}
+
+### fit NN to data matrix
+fit.nn <- readRDS("output/setting1_iter1_nn.rds")
+plotLF_data(fit.nn, title=c("Estimated L from NN to data", "Estimated F from NN to data"))
+
+### fit SNN to data matrix
+fit.snn <- readRDS("output/setting1_iter1_snn.rds")
+plotLF_data(fit.snn, title=c("Estimated L from SNN to data", "Estimated F from SNN to data"))
+
+### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 <- readRDS("output/setting1_iter1_cov.rds")
+plotLF_cov(fit.cov.v1, title=c("Estimated L from SNN to covariance \n with point exponential prior", "Estimated F from SNN to covariance \n with point exponential prior"))
+
+### fit NN to covariance matrix with generalized binary prior
+fit.cov <- readRDS("output/setting1_iter1_cov_binary.rds")
+plotLF_cov(fit.cov, title=c("Estimated L from SNN to covariance \n with general binary prior", "Estimated F from SNN to covariance \n with general binary prior"))
+
+```
+
+
+## rep=2
+```{r warning=F}
+
+### fit NN to data matrix
+fit.nn <- readRDS("output/setting1_iter2_nn.rds")
+plotLF_data(fit.nn, title=c("Estimated L from NN to data", "Estimated F from NN to data"))
+
+### fit SNN to data matrix
+fit.snn <- readRDS("output/setting1_iter2_snn.rds")
+plotLF_data(fit.snn, title=c("Estimated L from SNN to data", "Estimated F from SNN to data"))
+
+### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 <- readRDS("output/setting1_iter2_cov.rds")
+plotLF_cov(fit.cov.v1, title=c("Estimated L from SNN to covariance \n with point exponential prior", "Estimated F from SNN to covariance \n with point exponential prior"))
+
+### fit NN to covariance matrix with generalized binary prior
+fit.cov <- readRDS("output/setting1_iter2_cov_binary.rds")
+plotLF_cov(fit.cov, title=c("Estimated L from SNN to covariance \n with general binary prior", "Estimated F from SNN to covariance \n with general binary prior"))
+
+```
+
+
+## rep=3
+```{r warning=F}
+
+### fit NN to data matrix
+fit.nn <- readRDS("output/setting1_iter3_nn.rds")
+plotLF_data(fit.nn, title=c("Estimated L from NN to data", "Estimated F from NN to data"))
+
+### fit SNN to data matrix
+fit.snn <- readRDS("output/setting1_iter3_snn.rds")
+plotLF_data(fit.snn, title=c("Estimated L from SNN to data", "Estimated F from SNN to data"))
+
+### fit NN to covariance matrix with point exponential prior
+fit.cov.v1 <- readRDS("output/setting1_iter3_cov.rds")
+plotLF_cov(fit.cov.v1, title=c("Estimated L from SNN to covariance \n with point exponential prior", "Estimated F from SNN to covariance \n with point exponential prior"))
+
+### fit NN to covariance matrix with generalized binary prior
+fit.cov <- readRDS("output/setting1_iter3_cov_binary.rds")
+plotLF_cov(fit.cov, title=c("Estimated L from SNN to covariance \n with general binary prior", "Estimated F from SNN to covariance \n with general binary prior"))
+
+```

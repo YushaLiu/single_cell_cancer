@@ -18,3 +18,5 @@ Click on this [link](simulations3_binary_general_more.html) to see application o
 Click on this [link](twogroup.html) to see application of flash to covariance matrix of simulated data from two groups with shared factors. <br /> 
 Click on this [link](presentation.html) to see illustration of a motivating example to analysis of single cell cancer data.  <br /> 
 Click on this [link](simulations3_general_binary_normalmix.html) to see application of flash to covariance matrix of simulated data with correlated factors with generalized binary prior. <br /> 
+Click on this [link](setting1.html) to see application of flash to simulated data which come from three groups, with two groups sharing similarity. <br /> 
+Click on this [link](setting2.html) to see application of flash to simulated data which come from 3 groups, where group 1 further consists of 3 subgroups. <br /> 
